@@ -1,3 +1,4 @@
+# RedShop CI - first custom pipeline
 stages:
   - build
   - test
