@@ -24,9 +24,7 @@ sast:
 
 sca-sbom:
   stage: sca
-  image:
-    name: redshop/syft:1.51.1
-    entrypoint: [""]
+  image: redshop/syft:1.51.1
   script:
     - syft dir:. -o syft-json=sbom.json
   artifacts:
