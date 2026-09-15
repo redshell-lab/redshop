@@ -1,4 +1,3 @@
-# RedShop CI
 stages:
   - build
   - test
