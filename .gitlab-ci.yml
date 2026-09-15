@@ -11,6 +11,9 @@ build:
   image: maven:3.9-eclipse-temurin-21
   script:
     - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - target/*.jar
 
 test:
   stage: test
@@ -51,5 +54,8 @@ gitleaks:
 package:
   stage: package
   image: docker:27-cli
+  needs:
+    - job: build
+      artifacts: true
   script:
     - docker build -t redshop/redshop:$CI_COMMIT_SHORT_SHA .
