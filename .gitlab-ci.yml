@@ -48,8 +48,8 @@ gitleaks:
   script:
     - gitleaks git .
 
-docker-test:
+package:
   stage: package
   image: docker:27-cli
   script:
-    - docker version
+    - docker build -t redshop/redshop:$CI_COMMIT_SHORT_SHA .
