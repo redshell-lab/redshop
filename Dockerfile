@@ -2,7 +2,12 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-COPY target/*.jar app.jar
+RUN groupadd --system appgroup \
+    && useradd --system --gid appgroup appuser
+
+COPY --chown=appuser:appgroup target/*.jar app.jar
+
+USER appuser
 
 EXPOSE 8080
 
