@@ -1,9 +1,9 @@
-# Final
 stages:
   - build
   - test
   - sast
   - sca
+  - secrets
 
 build:
   stage: build
@@ -40,3 +40,9 @@ sca-scan:
       artifacts: true
   script:
     - grype sbom:sbom.json
+
+gitleaks:
+  stage: secrets
+  image: redshop/gitleaks:8.30.1
+  script:
+    - gitleaks git .
