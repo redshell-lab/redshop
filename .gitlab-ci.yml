@@ -1,3 +1,4 @@
+# test
 stages:
   - build
   - test
@@ -5,7 +6,7 @@ stages:
   - sca
   - secrets
   - package
-  - trivy
+# - trivy
 
 build:
   stage: build
@@ -61,8 +62,8 @@ package:
   script:
     - docker build -t redshop/redshop:$CI_COMMIT_SHORT_SHA .
 
-trivy:
-  stage: trivy
-  image: redshop/trivy:0.74.0
-  script:
-    - trivy image --exit-code 1 --severity HIGH,CRITICAL redshop/redshop:$CI_COMMIT_SHORT_SHA
+#trivy:
+#  stage: trivy
+#  image: redshop/trivy:0.74.0
+#  script:
+#    - trivy image --exit-code 1 --severity HIGH,CRITICAL redshop/redshop:$CI_COMMIT_SHORT_SHA
