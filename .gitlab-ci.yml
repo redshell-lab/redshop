@@ -76,4 +76,4 @@ deploy:
   script:
     - id
     - ls -ln /var/run/docker.sock
-    - docker versioncker rm redshop || true; docker run -d --name redshop --restart unless-stopped -p 127.0.0.1:8080:8080 $IMAGE"
+    - docker version
