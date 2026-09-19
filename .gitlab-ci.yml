@@ -160,10 +160,13 @@ dast:
 
   script:
     - rm -f /zap/wrk/zap-report.html
-    - zap-baseline.py
-      -t http://192.168.59.135/
-      -r /zap/wrk/zap-report.html
-      -I
+
+    - |
+      zap-baseline.py \
+        -t http://192.168.59.135/ \
+        -r zap-report.html \
+        -I
+
     - cp /zap/wrk/zap-report.html "$CI_PROJECT_DIR/zap-report.html"
 
   artifacts:
