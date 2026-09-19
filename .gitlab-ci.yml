@@ -71,9 +71,36 @@ package:
 deploy:
   stage: deploy
   image: docker:27-cli
+
   needs:
     - job: package
+
   script:
-    - id
-    - ls -ln /var/run/docker.sock
-    - docker version
+    - apk add --no-cache openssh-client
+    - chmod 600 "$SSH_PRIVATE_KEY"
+
+    - export IMAGE="redshop/redshop:$CI_COMMIT_SHORT_SHA"
+
+    - docker image inspect "$IMAGE"
+
+    - docker save "$IMAGE" | ssh \
+      -i "$SSH_PRIVATE_KEY" \
+      -o IdentitiesOnly=yes \
+      -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+      -o StrictHostKeyChecking=yes \
+      app@192.168.59.135 \
+      "docker load"
+
+    - ssh \
+      -i "$SSH_PRIVATE_KEY" \
+      -o IdentitiesOnly=yes \
+      -o UserKnownHostsFile="$SSH_KNOWN_HOSTS" \
+      -o StrictHostKeyChecking=yes \
+      app@192.168.59.135 \
+      "docker stop redshop || true; \
+      docker rm redshop || true; \
+      docker run -d \
+      --name redshop \
+      --restart unless-stopped \
+      -p 127.0.0.1:8080:8080 \
+      $IMAGE"
