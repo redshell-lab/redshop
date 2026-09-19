@@ -7,6 +7,7 @@ stages:
   - package
 # - trivy
   - deploy
+  - dast
 
 build:
   stage: build
@@ -148,3 +149,22 @@ deploy:
         -o StrictHostKeyChecking=yes \
         app@192.168.59.135 \
         "curl --fail --silent --show-error http://127.0.0.1/"
+
+
+dast:
+  stage: dast
+  image: ghcr.io/zaproxy/zaproxy:stable
+
+  needs:
+    - job: deploy
+
+  script:
+    - zap-baseline.py
+      -t http://192.168.59.135/
+      -r zap-report.html
+      -I
+
+  artifacts:
+    when: always
+    paths:
+      - zap-report.html
