@@ -22,7 +22,7 @@ public class UserDataInitializer {
             User user = new User(
                     "ehsan",
                     "ehsan@redshop.local",
-                    passwordEncoder.encode("Password123!"),
+                    passwordEncoder.encode("ehsan"),
                     "Ehsan",
                     "RedShell",
                     "USER"
