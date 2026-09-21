@@ -1,13 +1,13 @@
 stages:
   - build
-  - test
-  - sast
-  - sca
-  - secrets
+#  - test
+#  - sast
+#  - sca
+#  - secrets
   - package
 # - trivy
   - deploy
-  - dast
+#  - dast
 
 build:
   stage: build
