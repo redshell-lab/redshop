@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="'Order #' + ${order.id} + ' - RedShop'">
+        Order
+    </title>
+
+</head>
+
+<body>
+
+<h1>
+    Order #
+    <span th:text="${order.id}">1</span>
+</h1>
+
+<p>
+    <strong>Status:</strong>
+    <span th:text="${order.status}">PENDING</span>
+</p>
+
+<p>
+    <strong>Date:</strong>
+    <span th:text="${order.createdAt}">Date</span>
+</p>
+
+<h2>Products</h2>
+
+<table border="1" cellpadding="10">
+
+    <thead>
+
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Subtotal</th>
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr th:each="item : ${order.items}">
+
+        <td th:text="${item.product.name}">
+            Product
+        </td>
+
+        <td th:text="${item.quantity}">
+            1
+        </td>
+
+        <td th:text="${item.unitPrice}">
+            0.00
+        </td>
+
+        <td th:text="${item.subtotal}">
+            0.00
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+<h2>
+    Total:
+    $<span th:text="${order.total}">0.00</span>
+</h2>
+
+<h2>Shipping Address</h2>
+
+<p>
+    <strong>Name:</strong>
+    <span th:text="${order.address.fullName}"></span>
+</p>
+
+<p>
+    <strong>Street:</strong>
+    <span th:text="${order.address.street}"></span>
+</p>
+
+<p>
+    <strong>City:</strong>
+    <span th:text="${order.address.city}"></span>
+</p>
+
+<p>
+    <strong>Postal Code:</strong>
+    <span th:text="${order.address.postalCode}"></span>
+</p>
+
+<p>
+    <strong>Phone:</strong>
+    <span th:text="${order.address.phone}"></span>
+</p>
+
+<p>
+
+    <a href="/products">Continue Shopping</a>
+    |
+    <a href="/orders">My Orders</a>
+
+</p>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout - RedShop</title>
+</head>
+
+<body>
+
+<h1>Checkout</h1>
+
+<h2>Order Summary</h2>
+
+<table border="1" cellpadding="10">
+
+    <thead>
+
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Subtotal</th>
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr th:each="item : ${cart.items}">
+
+        <td th:text="${item.product.name}">
+            Product
+        </td>
+
+        <td th:text="${item.quantity}">
+            1
+        </td>
+
+        <td th:text="${item.product.price}">
+            0.00
+        </td>
+
+        <td th:text="${item.subtotal}">
+            0.00
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+<h2>
+    Total:
+    $<span th:text="${cart.total}">0.00</span>
+</h2>
+
+<h2>Shipping Information</h2>
+
+<form th:action="@{/checkout}" method="post">
+
+    <input
+            type="hidden"
+            th:name="${_csrf.parameterName}"
+            th:value="${_csrf.token}"
+    >
+
+    <div>
+        <label>Full Name</label>
+        <input
+                type="text"
+                name="fullName"
+                required
+        >
+    </div>
+
+    <br>
+
+    <div>
+        <label>Street</label>
+        <input
+                type="text"
+                name="street"
+                required
+        >
+    </div>
+
+    <br>
+
+    <div>
+        <label>City</label>
+        <input
+                type="text"
+                name="city"
+                required
+        >
+    </div>
+
+    <br>
+
+    <div>
+        <label>Postal Code</label>
+        <input
+                type="text"
+                name="postalCode"
+                required
+        >
+    </div>
+
+    <br>
+
+    <div>
+        <label>Phone</label>
+        <input
+                type="text"
+                name="phone"
+                required
+        >
+    </div>
+
+    <br>
+
+    <button type="submit">
+        Place Order
+    </button>
+
+</form>
+
+<p>
+    <a href="/cart">Back to Cart</a>
+</p>
+
+</body>
+</html>
