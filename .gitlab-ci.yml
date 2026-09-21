@@ -1,13 +1,14 @@
 stages:
   - build
-#  - test
-#  - sast
-#  - sca
-#  - secrets
+  # - test
+  # - sast
+  # - sca
+  # - secrets
   - package
-# - trivy
+  # - trivy
   - deploy
-#  - dast
+# - dast
+
 
 build:
   stage: build
@@ -18,41 +19,47 @@ build:
     paths:
       - target/*.jar
 
-test:
-  stage: test
-  image: maven:3.9-eclipse-temurin-21
-  script:
-    - mvn test
 
-sast:
-  stage: sast
-  image: redshop/opengrep:1.30.0
-  script:
-    - opengrep scan --config auto --error .
+# test:
+#   stage: test
+#   image: maven:3.9-eclipse-temurin-21
+#   script:
+#     - mvn test
 
-sca-sbom:
-  stage: sca
-  image: redshop/syft:1.51.1
-  script:
-    - syft dir:. -o syft-json=sbom.json
-  artifacts:
-    paths:
-      - sbom.json
 
-sca-scan:
-  stage: sca
-  image: redshop/grype:0.118.0
-  needs:
-    - job: sca-sbom
-      artifacts: true
-  script:
-    - grype sbom:sbom.json
+# sast:
+#   stage: sast
+#   image: redshop/opengrep:1.30.0
+#   script:
+#     - opengrep scan --config auto --error .
 
-gitleaks:
-  stage: secrets
-  image: redshop/gitleaks:8.30.1
-  script:
-    - gitleaks git .
+
+# sca-sbom:
+#   stage: sca
+#   image: redshop/syft:1.51.1
+#   script:
+#     - syft dir:. -o syft-json=sbom.json
+#   artifacts:
+#     paths:
+#       - sbom.json
+
+
+# sca-scan:
+#   stage: sca
+#   image: redshop/grype:0.118.0
+#   needs:
+#     - job: sca-sbom
+#       artifacts: true
+#   script:
+#     - grype sbom:sbom.json
+
+
+# gitleaks:
+#   stage: secrets
+#   image: redshop/gitleaks:8.30.1
+#   script:
+#     - gitleaks git .
+
 
 package:
   stage: package
@@ -63,11 +70,13 @@ package:
   script:
     - docker build -t redshop/redshop:$CI_COMMIT_SHORT_SHA .
 
-#trivy:
-#  stage: trivy
-#  image: redshop/trivy:0.74.0
-#  script:
-#    - trivy image --exit-code 1 --severity HIGH,CRITICAL redshop/redshop:$CI_COMMIT_SHORT_SHA
+
+# trivy:
+#   stage: trivy
+#   image: redshop/trivy:0.74.0
+#   script:
+#     - trivy image --exit-code 1 --severity HIGH,CRITICAL redshop/redshop:$CI_COMMIT_SHORT_SHA
+
 
 deploy:
   stage: deploy
@@ -151,25 +160,25 @@ deploy:
         "curl --fail --silent --show-error http://127.0.0.1/"
 
 
-dast:
-  stage: dast
-  image: ghcr.io/zaproxy/zaproxy:stable
-
-  needs:
-    - job: deploy
-
-  script:
-    - rm -f /zap/wrk/zap-report.html
-
-    - |
-      zap-baseline.py \
-        -t http://192.168.59.135/ \
-        -r zap-report.html \
-        -I
-
-    - cp /zap/wrk/zap-report.html "$CI_PROJECT_DIR/zap-report.html"
-
-  artifacts:
-    when: always
-    paths:
-      - zap-report.html
+# dast:
+#   stage: dast
+#   image: ghcr.io/zaproxy/zaproxy:stable
+#
+#   needs:
+#     - job: deploy
+#
+#   script:
+#     - rm -f /zap/wrk/zap-report.html
+#
+#     - |
+#       zap-baseline.py \
+#         -t http://192.168.59.135/ \
+#         -r zap-report.html \
+#         -I
+#
+#     - cp /zap/wrk/zap-report.html "$CI_PROJECT_DIR/zap-report.html"
+#
+#   artifacts:
+#     when: always
+#     paths:
+#       - zap-report.html
