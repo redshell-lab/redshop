@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - RedShop</title>
+</head>
+
+<body>
+
+<h1>My Account</h1>
+
+<h2>Profile</h2>
+
+<p>
+    <strong>Username:</strong>
+    <span th:text="${user.username}"></span>
+</p>
+
+<p>
+    <strong>First Name:</strong>
+    <span th:text="${user.firstName}"></span>
+</p>
+
+<p>
+    <strong>Last Name:</strong>
+    <span th:text="${user.lastName}"></span>
+</p>
+
+<p>
+    <strong>Email:</strong>
+    <span th:text="${user.email}"></span>
+</p>
+
+<p>
+    <strong>Role:</strong>
+    <span th:text="${user.role}"></span>
+</p>
+
+<form th:action="@{/logout}" method="post">
+
+    <input
+            type="hidden"
+            th:name="${_csrf.parameterName}"
+            th:value="${_csrf.token}"
+    >
+
+    <button type="submit">Logout</button>
+
+</form>
+
+<p>
+    <a href="/products">Products</a>
+</p>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - RedShop</title>
+</head>
+
+<body>
+
+<h1>Create RedShop Account</h1>
+
+<form th:action="@{/register}" method="post">
+
+    <input
+            type="hidden"
+            th:name="${_csrf.parameterName}"
+            th:value="${_csrf.token}"
+    >
+
+    <div>
+        <label>First Name</label>
+        <input type="text" name="firstName" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Last Name</label>
+        <input type="text" name="lastName" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Username</label>
+        <input type="text" name="username" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Email</label>
+        <input type="email" name="email" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Password</label>
+        <input type="password" name="password" required>
+    </div>
+
+    <br>
+
+    <button type="submit">Create Account</button>
+
+</form>
+
+<p>
+    Already have an account?
+    <a href="/login">Login</a>
+</p>
+
+</body>
+</html>

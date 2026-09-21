@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - RedShop</title>
+</head>
+
+<body>
+
+<h1>RedShop Login</h1>
+
+<div th:if="${param.error}">
+    Invalid username or password.
+</div>
+
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+
+<div th:if="${param.registered}">
+    Registration successful. You can now log in.
+</div>
+
+<form th:action="@{/login}" method="post">
+
+    <input
+            type="hidden"
+            th:name="${_csrf.parameterName}"
+            th:value="${_csrf.token}"
+    >
+
+    <div>
+        <label>Username</label>
+        <input type="text" name="username" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label>Password</label>
+        <input type="password" name="password" required>
+    </div>
+
+    <br>
+
+    <button type="submit">Login</button>
+
+</form>
+
+<p>
+    Don't have an account?
+    <a href="/register">Register</a>
+</p>
+
+<p>
+    <a href="/products">Back to products</a>
+</p>
+
+</body>
+</html>
