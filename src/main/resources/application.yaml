@@ -1,3 +1,18 @@
 spring:
-  application:
-    name: redshop
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://redshop-db:5432/redshop}
+    username: ${DB_USERNAME:redshop}
+    password: ${DB_PASSWORD:redshop}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: true
+
+  thymeleaf:
+    cache: false
+
+server:
+  port: 8080

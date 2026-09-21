@@ -1,4 +1,4 @@
-package com.example.redshop;
+package com.redshell.redshop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,5 +9,4 @@ public class RedshopApplication {
     public static void main(String[] args) {
         SpringApplication.run(RedshopApplication.class, args);
     }
-
 }

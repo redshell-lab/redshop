@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.name} + ' - RedShop'">
+        Product - RedShop
+    </title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<p>
+    <a href="/products">← Back to products</a>
+</p>
+
+<div class="product">
+
+    <h1 th:text="${product.name}">
+        Product Name
+    </h1>
+
+    <p th:text="${product.description}">
+        Product description
+    </p>
+
+    <div class="price">
+        $
+        <span th:text="${product.price}">
+            0.00
+        </span>
+    </div>
+
+    <p>
+        Category:
+        <span th:text="${product.category.name}">
+            Category
+        </span>
+    </p>
+
+    <p>
+        Stock:
+        <span th:text="${product.stock}">
+            0
+        </span>
+    </p>
+
+</div>
+
+</body>
+</html>

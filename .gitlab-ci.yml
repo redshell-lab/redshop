@@ -119,6 +119,7 @@ deploy:
          docker run -d \
            --name redshop \
            --restart unless-stopped \
+           --network redshop-net \
            -p 127.0.0.1:8080:8080 \
            $IMAGE"
 
