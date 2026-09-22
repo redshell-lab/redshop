@@ -15,6 +15,12 @@
 
 <form method="post" action="/admin/products">
 
+    <input
+            type="hidden"
+            th:name="${_csrf.parameterName}"
+            th:value="${_csrf.token}"
+    >
+
     <div>
         <label for="name">Name:</label>
         <input
