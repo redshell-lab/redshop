@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Products</title>
+</head>
+
+<body>
+
+<h1>RedShop Admin</h1>
+
+<h2>Products</h2>
+
+<p>
+    <a href="/admin">Back to Dashboard</a>
+</p>
+
+<table border="1">
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr th:each="product : ${products}">
+
+        <td th:text="${product.id}">
+            1
+        </td>
+
+        <td th:text="${product.name}">
+            Product
+        </td>
+
+        <td th:text="${product.price}">
+            100
+        </td>
+
+        <td th:text="${product.category.name}">
+            Category
+        </td>
+
+        <td>
+            Edit |
+            Delete
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+</body>
+</html>
