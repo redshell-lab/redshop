@@ -67,4 +67,54 @@ public class AdminProductController {
 
         return "redirect:/admin/products";
     }
+
+
+    @PostMapping("/admin/products/{id}")
+    public String updateProduct(
+            @PathVariable Long id,
+            @RequestParam String name,
+            @RequestParam String description,
+            @RequestParam java.math.BigDecimal price,
+            @RequestParam Integer stock,
+            @RequestParam Long categoryId
+    ) {
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Category not found")
+                );
+
+        productService.update(
+                id,
+                name,
+                description,
+                price,
+                stock,
+                category
+        );
+
+        return "redirect:/admin/products";
+    }
+
+
+    @GetMapping("/admin/products/{id}/edit")
+    public String editProduct(
+            @PathVariable Long id,
+            Model model
+    ) {
+
+        Product product = productService.findById(id);
+
+        model.addAttribute(
+                "product",
+                product
+        );
+
+        model.addAttribute(
+                "categories",
+                categoryRepository.findAll()
+        );
+
+        return "admin/products/form";
+    }
 }

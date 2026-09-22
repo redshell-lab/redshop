@@ -4,16 +4,25 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Add Product</title>
+    <title th:text="${product != null ? 'Admin - Edit Product' : 'Admin - Add Product'}">
+        Admin - Product
+    </title>
 </head>
 
 <body>
 
 <h1>RedShop Admin</h1>
 
-<h2>Add Product</h2>
+<h2 th:text="${product != null ? 'Edit Product' : 'Add Product'}">
+    Product
+</h2>
 
-<form method="post" action="/admin/products">
+<form
+        method="post"
+        th:action="${product != null
+            ? '/admin/products/' + product.id
+            : '/admin/products'}"
+>
 
     <input
             type="hidden"
@@ -23,10 +32,12 @@
 
     <div>
         <label for="name">Name:</label>
+
         <input
                 type="text"
                 id="name"
                 name="name"
+                th:value="${product != null ? product.name : ''}"
                 required
         >
     </div>
@@ -35,11 +46,13 @@
 
     <div>
         <label for="description">Description:</label>
+
         <textarea
                 id="description"
                 name="description"
                 rows="5"
                 cols="40"
+                th:text="${product != null ? product.description : ''}"
         ></textarea>
     </div>
 
@@ -47,12 +60,14 @@
 
     <div>
         <label for="price">Price:</label>
+
         <input
                 type="number"
                 id="price"
                 name="price"
                 step="0.01"
                 min="0"
+                th:value="${product != null ? product.price : ''}"
                 required
         >
     </div>
@@ -61,11 +76,13 @@
 
     <div>
         <label for="stock">Stock:</label>
+
         <input
                 type="number"
                 id="stock"
                 name="stock"
                 min="0"
+                th:value="${product != null ? product.stock : ''}"
                 required
         >
     </div>
@@ -88,7 +105,10 @@
             <option
                     th:each="category : ${categories}"
                     th:value="${category.id}"
-                    th:text="${category.name}">
+                    th:text="${category.name}"
+                    th:selected="${product != null
+                        and product.category != null
+                        and product.category.id == category.id}">
             </option>
 
         </select>
@@ -96,8 +116,10 @@
 
     <br>
 
-    <button type="submit">
-        Create Product
+    <button
+            type="submit"
+            th:text="${product != null ? 'Update Product' : 'Create Product'}">
+        Save
     </button>
 
 </form>

@@ -40,4 +40,27 @@ public class ProductService {
 
         return productRepository.save(product);
     }
+
+    public Product update(
+            Long id,
+            String name,
+            String description,
+            BigDecimal price,
+            Integer stock,
+            Category category
+    ) {
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Product not found")
+                );
+
+        product.setName(name);
+        product.setDescription(description);
+        product.setPrice(price);
+        product.setStock(stock);
+        product.setCategory(category);
+
+        return productRepository.save(product);
+    }
 }
