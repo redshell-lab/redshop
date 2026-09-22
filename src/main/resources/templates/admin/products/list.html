@@ -59,11 +59,24 @@
             <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">
                 Edit
             </a>
-        </td>
+            |
+            <form
+                    method="post"
+                    th:action="@{/admin/products/{id}/delete(id=${product.id})}"
+                    style="display:inline"
+            >
 
-        <td>
-            Edit |
-            Delete
+                <input
+                        type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}"
+                >
+
+                <button type="submit">
+                    Delete
+                </button>
+
+            </form>
         </td>
 
     </tr>
