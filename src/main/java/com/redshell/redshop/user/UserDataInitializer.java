@@ -15,20 +15,33 @@ public class UserDataInitializer {
     ) {
         return args -> {
 
-            if (userRepository.count() > 0) {
-                return;
+            if (!userRepository.existsByUsername("ehsan")) {
+
+                User user = new User(
+                        "ehsan",
+                        "ehsan@redshop.local",
+                        passwordEncoder.encode("Password123!"),
+                        "Ehsan",
+                        "RedShell",
+                        "USER"
+                );
+
+                userRepository.save(user);
             }
 
-            User user = new User(
-                    "ehsan",
-                    "ehsan@redshop.local",
-                    passwordEncoder.encode("Password123!"),
-                    "Ehsan",
-                    "RedShell",
-                    "USER"
-            );
+            if (!userRepository.existsByUsername("admin")) {
 
-            userRepository.save(user);
+                User admin = new User(
+                        "admin",
+                        "admin@redshop.local",
+                        passwordEncoder.encode("Admin123!"),
+                        "RedShop",
+                        "Admin",
+                        "ADMIN"
+                );
+
+                userRepository.save(admin);
+            }
         };
     }
 }
