@@ -11,10 +11,50 @@
 
 <h2>Dashboard</h2>
 
+<section>
+
+    <div>
+        <h3>Users</h3>
+        <p th:text="${userCount}">0</p>
+    </div>
+
+    <div>
+        <h3>Products</h3>
+        <p th:text="${productCount}">0</p>
+    </div>
+
+    <div>
+        <h3>Orders</h3>
+        <p th:text="${orderCount}">0</p>
+    </div>
+
+</section>
+
+<hr>
+
+<h2>Management</h2>
+
 <ul>
-    <li><a href="/products">Products</a></li>
-    <li><a href="/account">My Account</a></li>
+    <li>
+        <a href="/admin/products">Products</a>
+    </li>
+
+    <li>
+        <a href="/admin/categories">Categories</a>
+    </li>
+
+    <li>
+        <a href="/admin/users">Users</a>
+    </li>
+
+    <li>
+        <a href="/admin/orders">Orders</a>
+    </li>
 </ul>
+
+<hr>
+
+<a href="/products">Back to Shop</a>
 
 <form method="post" action="/logout">
     <button type="submit">Logout</button>
