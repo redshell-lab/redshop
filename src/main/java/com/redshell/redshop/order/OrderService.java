@@ -111,4 +111,22 @@ public class OrderService {
                         )
                 );
     }
+
+
+    public Order updateStatus(
+            Long id,
+            OrderStatus status
+    ) {
+
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Order not found"
+                        )
+                );
+
+        order.setStatus(status);
+
+        return orderRepository.save(order);
+    }
 }

@@ -75,6 +75,10 @@ public class Order {
         return status;
     }
 
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
     public BigDecimal getTotal() {
         return total;
     }
