@@ -1214,3 +1214,38 @@ tbody tr:hover {
     }
 
 }
+
+
+/* =========================================================
+   ERROR PAGE
+   ========================================================= */
+
+.error-page {
+    max-width: 640px;
+    margin: 80px auto;
+    text-align: center;
+}
+
+.error-code {
+    margin-bottom: 16px;
+    color: var(--primary);
+    font-size: 72px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -2px;
+}
+
+.error-page .page-title {
+    margin-bottom: 10px;
+}
+
+.error-page .page-subtitle {
+    margin: 0 auto;
+    max-width: 520px;
+}
+
+.error-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+}
