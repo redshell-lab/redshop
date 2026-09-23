@@ -2,204 +2,184 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <title
-            th:text="${user != null
-                ? 'Admin - Edit User'
-                : 'Admin - Add User'}">
-        Admin - User
-    </title>
-
-</head>
+<head th:replace="~{fragments/header :: header(${product.id == null ? 'Add Product' : 'Edit Product'})}"></head>
 
 <body>
 
-<h1>RedShop Admin</h1>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<h2
-        th:text="${user != null
-            ? 'Edit User'
-            : 'Add User'}">
-    User
-</h2>
+<main>
 
-<form
-        method="post"
-        th:action="${user != null
-            ? '/admin/users/' + user.id
-            : '/admin/users'}"
->
+    <div class="container">
 
-    <input
-            type="hidden"
-            th:name="${_csrf.parameterName}"
-            th:value="${_csrf.token}"
-    >
+        <div class="mb-lg">
 
-    <!-- Username -->
+            <h1 class="page-title"
+                th:text="${product.id == null ? 'Add Product' : 'Edit Product'}">
+                Add Product
+            </h1>
 
-    <div>
+            <p class="page-subtitle">
+                Enter product information.
+            </p>
 
-        <label for="username">
-            Username:
-        </label>
-
-        <input
-                type="text"
-                id="username"
-                name="username"
-                th:value="${user != null
-                    ? user.username
-                    : ''}"
-                th:readonly="${user != null}"
-                required
-        >
-
-    </div>
-
-    <br>
-
-    <!-- Email -->
-
-    <div>
-
-        <label for="email">
-            Email:
-        </label>
-
-        <input
-                type="email"
-                id="email"
-                name="email"
-                th:value="${user != null
-                    ? user.email
-                    : ''}"
-                required
-        >
-
-    </div>
-
-    <br>
-
-    <!-- Password -->
-
-    <div>
-
-        <label for="password">
-            Password:
-        </label>
-
-        <input
-                type="password"
-                id="password"
-                name="password"
-                th:required="${user == null}"
-        >
-
-        <div th:if="${user != null}">
-            Leave empty to keep the current password.
         </div>
 
+
+        <section class="card admin-form-card">
+
+            <div class="card-body">
+
+                <form
+                        th:action="${product.id == null
+                            ? '/admin/products'
+                            : '/admin/products/' + product.id}"
+                        method="post">
+
+                    <div class="form-group">
+
+                        <label class="form-label"
+                               for="name">
+                            Product Name
+                        </label>
+
+                        <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                th:value="${product.name}"
+                                required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label"
+                               for="description">
+                            Description
+                        </label>
+
+                        <textarea
+                                id="description"
+                                name="description"
+                                rows="5"
+                                th:text="${product.description}"
+                                required></textarea>
+
+                    </div>
+
+
+                    <div class="admin-form-grid">
+
+                        <div class="form-group">
+
+                            <label class="form-label"
+                                   for="price">
+                                Price
+                            </label>
+
+                            <input
+                                    type="number"
+                                    id="price"
+                                    name="price"
+                                    step="0.01"
+                                    min="0"
+                                    th:value="${product.price}"
+                                    required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label class="form-label"
+                                   for="stock">
+                                Stock
+                            </label>
+
+                            <input
+                                    type="number"
+                                    id="stock"
+                                    name="stock"
+                                    min="0"
+                                    th:value="${product.stock}"
+                                    required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label"
+                               for="category">
+                            Category
+                        </label>
+
+                        <select
+                                id="category"
+                                name="categoryId"
+                                required>
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option
+                                    th:each="category : ${categories}"
+                                    th:value="${category.id}"
+                                    th:text="${category.name}"
+                                    th:selected="${product.category != null
+                                        and product.category.id == category.id}">
+                                Category
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <input
+                            type="hidden"
+                            th:name="${_csrf.parameterName}"
+                            th:value="${_csrf.token}"
+                    >
+
+
+                    <div class="admin-form-actions">
+
+                        <a class="btn btn-secondary"
+                           href="/admin/products">
+                            Cancel
+                        </a>
+
+                        <button
+                                type="submit"
+                                class="btn btn-primary"
+                                th:text="${product.id == null
+                                    ? 'Create Product'
+                                    : 'Save Changes'}">
+                            Save
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
     </div>
 
-    <br>
+</main>
 
-    <!-- First Name -->
-
-    <div>
-
-        <label for="firstName">
-            First Name:
-        </label>
-
-        <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                th:value="${user != null
-                    ? user.firstName
-                    : ''}"
-                required
-        >
-
-    </div>
-
-    <br>
-
-    <!-- Last Name -->
-
-    <div>
-
-        <label for="lastName">
-            Last Name:
-        </label>
-
-        <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                th:value="${user != null
-                    ? user.lastName
-                    : ''}"
-                required
-        >
-
-    </div>
-
-    <br>
-
-    <!-- Role -->
-
-    <div>
-
-        <label for="role">
-            Role:
-        </label>
-
-        <select
-                id="role"
-                name="role"
-                required
-        >
-
-            <option
-                    value="USER"
-                    th:selected="${user != null
-                        and user.role == 'USER'}">
-                USER
-            </option>
-
-            <option
-                    value="ADMIN"
-                    th:selected="${user != null
-                        and user.role == 'ADMIN'}">
-                ADMIN
-            </option>
-
-        </select>
-
-    </div>
-
-    <br>
-
-    <button
-            type="submit"
-            th:text="${user != null
-                ? 'Update User'
-                : 'Create User'}">
-        Save
-    </button>
-
-</form>
-
-<br>
-
-<a href="/admin/users">
-    Back to Users
-</a>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>
