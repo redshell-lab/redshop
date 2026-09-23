@@ -691,3 +691,80 @@ tbody tr:hover {
     padding: 7px 12px;
     font-size: 13px;
 }
+
+
+/* =========================
+   Checkout
+   ========================= */
+
+.checkout-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.checkout-summary {
+    min-width: 0;
+}
+
+.checkout-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    margin-top: 20px;
+    padding-top: 16px;
+
+    border-top: 1px solid var(--border);
+
+    font-size: 16px;
+}
+
+.checkout-total strong {
+    font-size: 20px;
+}
+
+.checkout-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.checkout-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+
+    margin-top: 24px;
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border);
+}
+
+@media (max-width: 800px) {
+
+    .checkout-layout {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 560px) {
+
+    .checkout-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .checkout-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .checkout-actions .btn {
+        width: 100%;
+    }
+
+}
