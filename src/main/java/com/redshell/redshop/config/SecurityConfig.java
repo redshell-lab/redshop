@@ -32,7 +32,11 @@ public class SecurityConfig {
                                 "/api/products",
                                 "/api/products/**",
                                 "/login",
-                                "/register"
+                                "/register",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/favicon.ico"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
