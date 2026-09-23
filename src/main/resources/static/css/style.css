@@ -117,9 +117,11 @@ main {
 .brand {
     display: inline-flex;
     align-items: center;
-    font-size: 21px;
+
+    font-size: 24px;
     font-weight: 750;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.04em;
+
     line-height: 1;
 }
 
