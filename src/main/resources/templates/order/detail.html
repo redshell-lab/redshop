@@ -1,114 +1,243 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title th:text="'Order #' + ${order.id} + ' - RedShop'">
-        Order
-    </title>
-
-</head>
+<head th:replace="~{fragments/header :: header('Order Details')}"></head>
 
 <body>
 
-<h1>
-    Order #
-    <span th:text="${order.id}">1</span>
-</h1>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<p>
-    <strong>Status:</strong>
-    <span th:text="${order.status}">PENDING</span>
-</p>
+<main>
 
-<p>
-    <strong>Date:</strong>
-    <span th:text="${order.createdAt}">Date</span>
-</p>
+    <div class="container">
 
-<h2>Products</h2>
+        <div class="mb-md">
 
-<table border="1" cellpadding="10">
+            <a class="text-secondary"
+               href="/orders">
+                ← Back to orders
+            </a>
 
-    <thead>
+        </div>
 
-    <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Unit Price</th>
-        <th>Subtotal</th>
-    </tr>
+        <div class="mb-lg">
 
-    </thead>
+            <h1 class="page-title">
 
-    <tbody>
+                Order #
+                <span th:text="${order.id}">
+                    1
+                </span>
 
-    <tr th:each="item : ${order.items}">
+            </h1>
 
-        <td th:text="${item.product.name}">
-            Product
-        </td>
+            <p class="page-subtitle">
+                Review your order details and shipping information.
+            </p>
 
-        <td th:text="${item.quantity}">
-            1
-        </td>
+        </div>
 
-        <td th:text="${item.unitPrice}">
-            0.00
-        </td>
 
-        <td th:text="${item.subtotal}">
-            0.00
-        </td>
+        <!-- Order Information -->
 
-    </tr>
+        <section class="card mb-lg">
 
-    </tbody>
+            <div class="card-body">
 
-</table>
+                <div class="order-header">
 
-<h2>
-    Total:
-    $<span th:text="${order.total}">0.00</span>
-</h2>
+                    <div>
 
-<h2>Shipping Address</h2>
+                        <div class="form-label">
+                            Order Date
+                        </div>
 
-<p>
-    <strong>Name:</strong>
-    <span th:text="${order.address.fullName}"></span>
-</p>
+                        <div th:text="${order.createdAt}">
+                            2026-01-01
+                        </div>
 
-<p>
-    <strong>Street:</strong>
-    <span th:text="${order.address.street}"></span>
-</p>
+                    </div>
 
-<p>
-    <strong>City:</strong>
-    <span th:text="${order.address.city}"></span>
-</p>
+                    <div>
 
-<p>
-    <strong>Postal Code:</strong>
-    <span th:text="${order.address.postalCode}"></span>
-</p>
+                        <div class="form-label">
+                            Status
+                        </div>
 
-<p>
-    <strong>Phone:</strong>
-    <span th:text="${order.address.phone}"></span>
-</p>
+                        <span class="badge badge-neutral"
+                              th:text="${order.status}">
+                            PENDING
+                        </span>
 
-<p>
+                    </div>
 
-    <a href="/products">Continue Shopping</a>
-    |
-    <a href="/orders">My Orders</a>
+                </div>
 
-</p>
+            </div>
+
+        </section>
+
+
+        <!-- Order Items -->
+
+        <section class="card mb-lg">
+
+            <div class="card-body">
+
+                <h2 class="section-title">
+                    Order Items
+                </h2>
+
+                <div class="table-wrapper">
+
+                    <table class="data-table">
+
+                        <thead>
+
+                        <tr>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                            <th>
+                                Price
+                            </th>
+
+                            <th>
+                                Subtotal
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="item : ${order.items}">
+
+                            <td th:text="${item.product.name}">
+                                Product
+                            </td>
+
+                            <td th:text="${item.quantity}">
+                                1
+                            </td>
+
+                            <td>
+
+                                $
+                                <span th:text="${item.product.price}">
+                                    0.00
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                $
+                                <span th:text="${item.subtotal}">
+                                    0.00
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="order-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong>
+
+                        $
+                        <span th:text="${order.total}">
+                            0.00
+                        </span>
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Shipping Address -->
+
+        <section class="card">
+
+            <div class="card-body">
+
+                <h2 class="section-title">
+                    Shipping Address
+                </h2>
+
+                <div class="shipping-address">
+
+                    <div th:text="${order.address.fullName}">
+                        John Doe
+                    </div>
+
+                    <div th:text="${order.address.street}">
+                        123 Main Street
+                    </div>
+
+                    <div>
+
+                        <span th:text="${order.address.city}">
+                            City
+                        </span>
+
+                        <span>
+                            ,
+                        </span>
+
+                        <span th:text="${order.address.postalCode}">
+                            12345
+                        </span>
+
+                    </div>
+
+                    <div th:text="${order.address.phone}">
+                        +123456789
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="mt-lg">
+
+            <a class="btn btn-secondary"
+               href="/products">
+                Continue Shopping
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

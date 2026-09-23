@@ -1,64 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>RedShop Admin</title>
-</head>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: header('Admin Dashboard')}"></head>
 
 <body>
 
-<h1>RedShop Admin</h1>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<h2>Dashboard</h2>
+<main>
 
-<section>
+    <div class="container">
 
-    <div>
-        <h3>Users</h3>
-        <p th:text="${userCount}">0</p>
+        <div class="mb-lg">
+
+            <h1 class="page-title">
+                Admin Dashboard
+            </h1>
+
+            <p class="page-subtitle">
+                Manage RedShop users, products, categories, and orders.
+            </p>
+
+        </div>
+
+
+        <!-- Statistics -->
+
+        <section class="admin-stats">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <div class="stat-label">
+                        Users
+                    </div>
+
+                    <div class="stat-value"
+                         th:text="${userCount}">
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <div class="stat-label">
+                        Products
+                    </div>
+
+                    <div class="stat-value"
+                         th:text="${productCount}">
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <div class="stat-label">
+                        Orders
+                    </div>
+
+                    <div class="stat-value"
+                         th:text="${orderCount}">
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Management -->
+
+        <section class="mt-xl">
+
+            <h2 class="section-title">
+                Management
+            </h2>
+
+            <div class="admin-links">
+
+                <a class="card admin-link"
+                   href="/admin/products">
+
+                    <div class="card-body">
+
+                        <h3>
+                            Products
+                        </h3>
+
+                        <p>
+                            Create, edit, and remove products.
+                        </p>
+
+                    </div>
+
+                </a>
+
+
+                <a class="card admin-link"
+                   href="/admin/categories">
+
+                    <div class="card-body">
+
+                        <h3>
+                            Categories
+                        </h3>
+
+                        <p>
+                            Manage product categories.
+                        </p>
+
+                    </div>
+
+                </a>
+
+
+                <a class="card admin-link"
+                   href="/admin/users">
+
+                    <div class="card-body">
+
+                        <h3>
+                            Users
+                        </h3>
+
+                        <p>
+                            Manage user accounts and roles.
+                        </p>
+
+                    </div>
+
+                </a>
+
+
+                <a class="card admin-link"
+                   href="/admin/orders">
+
+                    <div class="card-body">
+
+                        <h3>
+                            Orders
+                        </h3>
+
+                        <p>
+                            Review and manage customer orders.
+                        </p>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
     </div>
 
-    <div>
-        <h3>Products</h3>
-        <p th:text="${productCount}">0</p>
-    </div>
+</main>
 
-    <div>
-        <h3>Orders</h3>
-        <p th:text="${orderCount}">0</p>
-    </div>
-
-</section>
-
-<hr>
-
-<h2>Management</h2>
-
-<ul>
-    <li>
-        <a href="/admin/products">Products</a>
-    </li>
-
-    <li>
-        <a href="/admin/categories">Categories</a>
-    </li>
-
-    <li>
-        <a href="/admin/users">Users</a>
-    </li>
-
-    <li>
-        <a href="/admin/orders">Orders</a>
-    </li>
-</ul>
-
-<hr>
-
-<a href="/products">Back to Shop</a>
-
-<form method="post" action="/logout">
-    <button type="submit">Logout</button>
-</form>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

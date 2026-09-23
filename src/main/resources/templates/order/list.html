@@ -1,84 +1,148 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>My Orders - RedShop</title>
-
-</head>
+<head th:replace="~{fragments/header :: header('My Orders')}"></head>
 
 <body>
 
-<h1>My Orders</h1>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<p>
-    <a href="/products">Products</a>
-    |
-    <a href="/cart">Cart</a>
-    |
-    <a href="/account">My Account</a>
-</p>
+<main>
 
-<div th:if="${orders.isEmpty()}">
+    <div class="container">
 
-    <p>You have no orders yet.</p>
+        <div class="mb-lg">
 
-</div>
+            <h1 class="page-title">
+                My Orders
+            </h1>
 
-<table
-        th:unless="${orders.isEmpty()}"
-        border="1"
-        cellpadding="10"
->
+            <p class="page-subtitle">
+                View your previous orders and their status.
+            </p>
 
-    <thead>
+        </div>
 
-    <tr>
-        <th>Order ID</th>
-        <th>Date</th>
-        <th>Status</th>
-        <th>Total</th>
-        <th>Details</th>
-    </tr>
+        <!-- Empty State -->
 
-    </thead>
+        <div class="card"
+             th:if="${orders.isEmpty()}">
 
-    <tbody>
+            <div class="empty-state">
 
-    <tr th:each="order : ${orders}">
+                <h2 class="section-title">
+                    No orders yet
+                </h2>
 
-        <td th:text="${order.id}">
-            1
-        </td>
+                <p class="text-secondary">
+                    You have not placed any orders yet.
+                </p>
 
-        <td th:text="${order.createdAt}">
-            Date
-        </td>
+                <a class="btn btn-primary mt-md"
+                   href="/products">
+                    Start Shopping
+                </a>
 
-        <td th:text="${order.status}">
-            PENDING
-        </td>
+            </div>
 
-        <td th:text="${order.total}">
-            0.00
-        </td>
+        </div>
 
-        <td>
-            <a
-                    th:href="@{/orders/{id}(id=${order.id})}"
-                    th:text="'View Order #' + ${order.id}">
-                View
-            </a>
-        </td>
 
-    </tr>
+        <!-- Orders -->
 
-    </tbody>
+        <div class="table-wrapper"
+             th:unless="${orders.isEmpty()}">
 
-</table>
+            <table class="data-table">
+
+                <thead>
+
+                <tr>
+
+                    <th>
+                        Order
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Total
+                    </th>
+
+                    <th>
+                        Details
+                    </th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="order : ${orders}">
+
+                    <td>
+
+                        <strong>
+                            #
+                            <span th:text="${order.id}">
+                                1
+                            </span>
+                        </strong>
+
+                    </td>
+
+                    <td th:text="${order.createdAt}">
+                        2026-01-01
+                    </td>
+
+                    <td>
+
+                        <span class="badge badge-neutral"
+                              th:text="${order.status}">
+                            PENDING
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        $
+                        <span th:text="${order.total}">
+                            0.00
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <a class="btn btn-secondary btn-sm"
+                           th:href="@{/orders/{id}(id=${order.id})}">
+                            View Order
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>
