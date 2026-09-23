@@ -2,7 +2,8 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/header :: header(${user.id == null ? 'Add User' : 'Edit User'})}"></head>
+<head th:replace="~{fragments/header :: header(${user != null ? 'Edit User' : 'Add User'})}">
+</head>
 
 <body>
 
@@ -13,164 +14,25 @@
     <div class="container">
 
         <div class="admin-page-header">
-
             <div>
-
                 <h1 class="page-title"
-                    th:text="${user.id == null ? 'Add User' : 'Edit User'}">
-                    Add User
+                    th:text="${user != null ? 'Edit User' : 'Add User'}">
+                    User
                 </h1>
 
                 <p class="page-subtitle">
-                    Manage user account information and role.
+                    Manage user account information and access role.
                 </p>
-
             </div>
-
         </div>
 
-
-        <section class="admin-form-card">
+        <div class="admin-form-card">
 
             <form
-                    th:action="${user.id == null
-                        ? '/admin/users'
-                        : '/admin/users/' + user.id}"
-                    method="post">
-
-                <div class="admin-form-grid">
-
-                    <div class="form-group">
-
-                        <label class="form-label"
-                               for="firstName">
-                            First Name
-                        </label>
-
-                        <input
-                                type="text"
-                                id="firstName"
-                                name="firstName"
-                                th:value="${user.firstName}"
-                                required
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label class="form-label"
-                               for="lastName">
-                            Last Name
-                        </label>
-
-                        <input
-                                type="text"
-                                id="lastName"
-                                name="lastName"
-                                th:value="${user.lastName}"
-                                required
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label class="form-label"
-                           for="username">
-                        Username
-                    </label>
-
-                    <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            th:value="${user.username}"
-                            autocomplete="username"
-                            required
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label class="form-label"
-                           for="email">
-                        Email
-                    </label>
-
-                    <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            th:value="${user.email}"
-                            autocomplete="email"
-                            required
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label class="form-label"
-                           for="password">
-                        Password
-                    </label>
-
-                    <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            autocomplete="new-password"
-                            th:required="${user.id == null}"
-                    >
-
-                    <div class="form-help"
-                         th:if="${user.id != null}">
-                        Leave blank to keep the current password.
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label class="form-label"
-                           for="role">
-                        Role
-                    </label>
-
-                    <select
-                            id="role"
-                            name="role"
-                            required>
-
-                        <option value="">
-                            Select role
-                        </option>
-
-                        <option value="USER"
-                                th:selected="${user.role != null
-                                    and user.role.toString() == 'USER'}">
-                            USER
-                        </option>
-
-                        <option value="ADMIN"
-                                th:selected="${user.role != null
-                                    and user.role.toString() == 'ADMIN'}">
-                            ADMIN
-                        </option>
-
-                    </select>
-
-                </div>
-
+                    method="post"
+                    th:action="${user != null
+                        ? '/admin/users/' + user.id
+                        : '/admin/users'}">
 
                 <input
                         type="hidden"
@@ -178,20 +40,159 @@
                         th:value="${_csrf.token}"
                 >
 
+                <div class="admin-form-grid">
+
+                    <div class="form-group">
+
+                        <label
+                                class="form-label"
+                                for="username">
+                            Username
+                        </label>
+
+                        <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                th:value="${user != null
+                                    ? user.username
+                                    : ''}"
+                                th:readonly="${user != null}"
+                                required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label
+                                class="form-label"
+                                for="email">
+                            Email
+                        </label>
+
+                        <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                th:value="${user != null
+                                    ? user.email
+                                    : ''}"
+                                required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label
+                                class="form-label"
+                                for="password">
+                            Password
+                        </label>
+
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                th:required="${user == null}"
+                        >
+
+                        <div
+                                class="form-help"
+                                th:if="${user != null}">
+                            Leave empty to keep the current password.
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label
+                                class="form-label"
+                                for="role">
+                            Role
+                        </label>
+
+                        <select
+                                id="role"
+                                name="role"
+                                required>
+
+                            <option
+                                    value="USER"
+                                    th:selected="${user != null
+                                        and user.role == 'USER'}">
+                                USER
+                            </option>
+
+                            <option
+                                    value="ADMIN"
+                                    th:selected="${user != null
+                                        and user.role == 'ADMIN'}">
+                                ADMIN
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label
+                                class="form-label"
+                                for="firstName">
+                            First Name
+                        </label>
+
+                        <input
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                th:value="${user != null
+                                    ? user.firstName
+                                    : ''}"
+                                required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label
+                                class="form-label"
+                                for="lastName">
+                            Last Name
+                        </label>
+
+                        <input
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                th:value="${user != null
+                                    ? user.lastName
+                                    : ''}"
+                                required
+                        >
+
+                    </div>
+
+                </div>
 
                 <div class="admin-form-actions">
 
-                    <a class="btn btn-secondary"
-                       href="/admin/users">
+                    <a
+                            href="/admin/users"
+                            class="btn btn-secondary">
                         Cancel
                     </a>
 
                     <button
                             type="submit"
                             class="btn btn-primary"
-                            th:text="${user.id == null
-                                ? 'Create User'
-                                : 'Save Changes'}">
+                            th:text="${user != null
+                                ? 'Update User'
+                                : 'Create User'}">
                         Save
                     </button>
 
@@ -199,7 +200,7 @@
 
             </form>
 
-        </section>
+        </div>
 
     </div>
 

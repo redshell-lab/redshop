@@ -2,7 +2,8 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/header :: header(${category.id == null ? 'Add Category' : 'Edit Category'})}"></head>
+<head th:replace="~{fragments/header :: header(${category != null ? 'Edit Category' : 'Add Category'})}">
+</head>
 
 <body>
 
@@ -13,48 +14,25 @@
     <div class="container">
 
         <div class="admin-page-header">
-
             <div>
-
                 <h1 class="page-title"
-                    th:text="${category.id == null ? 'Add Category' : 'Edit Category'}">
-                    Add Category
+                    th:text="${category != null ? 'Edit Category' : 'Add Category'}">
+                    Category
                 </h1>
 
                 <p class="page-subtitle">
-                    Enter the category information below.
+                    Manage product categories.
                 </p>
-
             </div>
-
         </div>
 
-
-        <section class="admin-form-card">
+        <div class="admin-form-card">
 
             <form
-                    th:action="${category.id == null
-                        ? '/admin/categories'
-                        : '/admin/categories/' + category.id}"
-                    method="post">
-
-                <div class="form-group">
-
-                    <label class="form-label"
-                           for="name">
-                        Category Name
-                    </label>
-
-                    <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            th:value="${category.name}"
-                            required
-                    >
-
-                </div>
-
+                    method="post"
+                    th:action="${category != null
+                        ? '/admin/categories/' + category.id
+                        : '/admin/categories'}">
 
                 <input
                         type="hidden"
@@ -62,20 +40,40 @@
                         th:value="${_csrf.token}"
                 >
 
+                <div class="form-group">
+
+                    <label
+                            class="form-label"
+                            for="name">
+                        Name
+                    </label>
+
+                    <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            th:value="${category != null
+                                ? category.name
+                                : ''}"
+                            required
+                    >
+
+                </div>
 
                 <div class="admin-form-actions">
 
-                    <a class="btn btn-secondary"
-                       href="/admin/categories">
+                    <a
+                            href="/admin/categories"
+                            class="btn btn-secondary">
                         Cancel
                     </a>
 
                     <button
                             type="submit"
                             class="btn btn-primary"
-                            th:text="${category.id == null
-                                ? 'Create Category'
-                                : 'Save Changes'}">
+                            th:text="${category != null
+                                ? 'Update Category'
+                                : 'Create Category'}">
                         Save
                     </button>
 
@@ -83,7 +81,7 @@
 
             </form>
 
-        </section>
+        </div>
 
     </div>
 
