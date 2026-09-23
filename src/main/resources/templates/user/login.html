@@ -1,62 +1,116 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - RedShop</title>
-</head>
+<head th:replace="~{fragments/header :: header('Login')}"></head>
 
 <body>
 
-<h1>RedShop Login</h1>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div th:if="${param.error}">
-    Invalid username or password.
-</div>
+<main class="auth-page">
 
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
+    <section class="auth-card">
 
-<div th:if="${param.registered}">
-    Registration successful. You can now log in.
-</div>
+        <div class="auth-header">
 
-<form th:action="@{/login}" method="post">
+            <h1 class="auth-title">
+                Welcome back
+            </h1>
 
-    <input
-            type="hidden"
-            th:name="${_csrf.parameterName}"
-            th:value="${_csrf.token}"
-    >
+            <p class="auth-description">
+                Sign in to continue to your RedShop account.
+            </p>
 
-    <div>
-        <label>Username</label>
-        <input type="text" name="username" required>
-    </div>
+        </div>
 
-    <br>
+        <div class="alert alert-error"
+             th:if="${param.error}">
+            Invalid username or password.
+        </div>
 
-    <div>
-        <label>Password</label>
-        <input type="password" name="password" required>
-    </div>
+        <div class="alert alert-success"
+             th:if="${param.logout}">
+            You have been logged out.
+        </div>
 
-    <br>
+        <div class="alert alert-success"
+             th:if="${param.registered}">
+            Registration successful. You can now log in.
+        </div>
 
-    <button type="submit">Login</button>
+        <form th:action="@{/login}"
+              method="post">
 
-</form>
+            <div class="form-group">
 
-<p>
-    Don't have an account?
-    <a href="/register">Register</a>
-</p>
+                <label class="form-label"
+                       for="username">
+                    Username
+                </label>
 
-<p>
-    <a href="/products">Back to products</a>
-</p>
+                <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        autocomplete="username"
+                        required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label"
+                       for="password">
+                    Password
+                </label>
+
+                <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        autocomplete="current-password"
+                        required
+                >
+
+            </div>
+
+            <input
+                    type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}"
+            >
+
+            <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="width: 100%;">
+                Login
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+
+            Don't have an account?
+            <a href="/register">
+                Register
+            </a>
+
+            <br>
+
+            <a href="/products">
+                Back to products
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

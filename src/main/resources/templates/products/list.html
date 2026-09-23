@@ -1,113 +1,77 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RedShop - Products</title>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        h1 {
-            margin-bottom: 30px;
-        }
-
-        .products {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .product {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-        }
-
-        .product h2 {
-            margin-top: 0;
-        }
-
-        .price {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 15px 0;
-        }
-
-        .stock {
-            color: #555;
-        }
-
-        a {
-            text-decoration: none;
-        }
-    </style>
-</head>
+<head th:replace="~{fragments/header :: header('Products')}"></head>
 
 <body>
 
-<h1>RedShop Products</h1>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<p>
-    <a href="/login">Login</a>
-    |
-    <a href="/register">Register</a>
-    |
-    <a href="/account">My Account</a>
-</p>
+<main>
 
-<p>
-    <a href="/login">Login</a>
-    |
-    <a href="/account">My Account</a>
-    |
-    <a href="/cart">Cart</a>
-</p>
+    <div class="container">
 
-<div class="products">
+        <div class="mb-md">
+            <h1 class="page-title">Products</h1>
 
-    <div class="product" th:each="product : ${products}">
-
-        <h2>
-            <a th:href="@{/products/{id}(id=${product.id})}"
-               th:text="${product.name}">
-                Product Name
-            </a>
-        </h2>
-
-        <p th:text="${product.description}">
-            Product description
-        </p>
-
-        <div class="price">
-            $
-            <span th:text="${product.price}">
-                0.00
-            </span>
+            <p class="page-subtitle">
+                Explore products available in RedShop.
+            </p>
         </div>
 
-        <div class="stock">
-            Stock:
-            <span th:text="${product.stock}">
-                0
-            </span>
-        </div>
+        <div class="product-grid">
 
-        <p>
-            Category:
-            <span th:text="${product.category.name}">
-                Category
-            </span>
-        </p>
+            <article class="product-card"
+                     th:each="product : ${products}">
+
+                <h2 class="product-card-title">
+
+                    <a th:href="@{/products/{id}(id=${product.id})}"
+                       th:text="${product.name}">
+                        Product Name
+                    </a>
+
+                </h2>
+
+                <p class="product-card-description"
+                   th:text="${product.description}">
+                    Product description
+                </p>
+
+                <div class="product-price">
+                    $
+                    <span th:text="${product.price}">
+                        0.00
+                    </span>
+                </div>
+
+                <div class="product-meta">
+
+                    <span>
+                        <span th:text="${product.category.name}">
+                            Category
+                        </span>
+                    </span>
+
+                    <span>
+                        Stock:
+                        <span th:text="${product.stock}">
+                            0
+                        </span>
+                    </span>
+
+                </div>
+
+            </article>
+
+        </div>
 
     </div>
 
-</div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

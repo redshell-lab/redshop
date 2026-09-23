@@ -1,110 +1,115 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${product.name} + ' - RedShop'">
-        Product - RedShop
-    </title>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .product {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 30px;
-        }
-
-        .price {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-    </style>
-</head>
+<head th:replace="~{fragments/header :: header(${product.name})}"></head>
 
 <body>
 
-<p>
-    <a href="/products">← Back to products</a>
-</p>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="product">
+<main>
 
-    <h1 th:text="${product.name}">
-        Product Name
-    </h1>
+    <div class="container">
 
-    <p th:text="${product.description}">
-        Product description
-    </p>
+        <p class="mb-md">
+            <a class="text-secondary"
+               href="/products">
+                ← Back to products
+            </a>
+        </p>
 
-    <div class="price">
-        $
-        <span th:text="${product.price}">
-            0.00
-        </span>
+        <section class="card product-detail">
+
+            <h1 class="page-title"
+                th:text="${product.name}">
+                Product Name
+            </h1>
+
+            <p class="product-detail-description"
+               th:text="${product.description}">
+                Product description
+            </p>
+
+            <div class="product-detail-price">
+
+                $
+                <span th:text="${product.price}">
+                    0.00
+                </span>
+
+            </div>
+
+            <div class="product-meta">
+
+                <span>
+                    Category:
+                    <strong th:text="${product.category.name}">
+                        Category
+                    </strong>
+                </span>
+
+                <span>
+                    Stock:
+                    <strong th:text="${product.stock}">
+                        0
+                    </strong>
+                </span>
+
+            </div>
+
+            <div class="mt-lg">
+
+                <form th:action="@{/cart/add}"
+                      method="post">
+
+                    <div class="form-group">
+
+                        <label class="form-label"
+                               for="quantity">
+                            Quantity
+                        </label>
+
+                        <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                min="1"
+                                value="1"
+                                style="max-width: 140px;"
+                        >
+
+                    </div>
+
+                    <input
+                            type="hidden"
+                            name="productId"
+                            th:value="${product.id}"
+                    >
+
+                    <input
+                            type="hidden"
+                            th:name="${_csrf.parameterName}"
+                            th:value="${_csrf.token}"
+                    >
+
+                    <button
+                            type="submit"
+                            class="btn btn-primary">
+                        Add to Cart
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
     </div>
 
-    <p>
-        Category:
-        <span th:text="${product.category.name}">
-            Category
-        </span>
-    </p>
+</main>
 
-    <p>
-        Stock:
-        <span th:text="${product.stock}">
-            0
-        </span>
-    </p>
-
-    <form th:action="@{/cart/add}" method="post">
-
-        <input
-                type="hidden"
-                name="productId"
-                th:value="${product.id}"
-        >
-
-        <label>Quantity</label>
-
-        <input
-                type="number"
-                name="quantity"
-                min="1"
-                value="1"
-        >
-
-        <input
-                type="hidden"
-                th:name="${_csrf.parameterName}"
-                th:value="${_csrf.token}"
-        >
-
-        <button type="submit">
-            Add to Cart
-        </button>
-
-    </form>
-
-
-    <p>
-        <a href="/products">Products</a>
-        |
-        <a href="/cart">Shopping Cart</a>
-        |
-        <a href="/account">My Account</a>
-    </p>
-
-</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>
