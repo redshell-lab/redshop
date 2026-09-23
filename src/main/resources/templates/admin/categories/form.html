@@ -12,76 +12,76 @@
 
     <div class="container">
 
-        <div class="mb-lg">
+        <div class="admin-page-header">
 
-            <h1 class="page-title"
-                th:text="${category.id == null ? 'Add Category' : 'Edit Category'}">
-                Add Category
-            </h1>
+            <div>
 
-            <p class="page-subtitle">
-                Enter category information.
-            </p>
+                <h1 class="page-title"
+                    th:text="${category.id == null ? 'Add Category' : 'Edit Category'}">
+                    Add Category
+                </h1>
+
+                <p class="page-subtitle">
+                    Enter the category information below.
+                </p>
+
+            </div>
 
         </div>
 
 
-        <section class="card admin-form-card">
+        <section class="admin-form-card">
 
-            <div class="card-body">
+            <form
+                    th:action="${category.id == null
+                        ? '/admin/categories'
+                        : '/admin/categories/' + category.id}"
+                    method="post">
 
-                <form
-                        th:action="${category.id == null
-                            ? '/admin/categories'
-                            : '/admin/categories/' + category.id}"
-                        method="post">
+                <div class="form-group">
 
-                    <div class="form-group">
-
-                        <label class="form-label"
-                               for="name">
-                            Category Name
-                        </label>
-
-                        <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                th:value="${category.name}"
-                                required
-                        >
-
-                    </div>
-
+                    <label class="form-label"
+                           for="name">
+                        Category Name
+                    </label>
 
                     <input
-                            type="hidden"
-                            th:name="${_csrf.parameterName}"
-                            th:value="${_csrf.token}"
+                            type="text"
+                            id="name"
+                            name="name"
+                            th:value="${category.name}"
+                            required
                     >
 
+                </div>
 
-                    <div class="admin-form-actions">
 
-                        <a class="btn btn-secondary"
-                           href="/admin/categories">
-                            Cancel
-                        </a>
+                <input
+                        type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}"
+                >
 
-                        <button
-                                type="submit"
-                                class="btn btn-primary"
-                                th:text="${category.id == null
-                                    ? 'Create Category'
-                                    : 'Save Changes'}">
-                            Save
-                        </button>
 
-                    </div>
+                <div class="admin-form-actions">
 
-                </form>
+                    <a class="btn btn-secondary"
+                       href="/admin/categories">
+                        Cancel
+                    </a>
 
-            </div>
+                    <button
+                            type="submit"
+                            class="btn btn-primary"
+                            th:text="${category.id == null
+                                ? 'Create Category'
+                                : 'Save Changes'}">
+                        Save
+                    </button>
+
+                </div>
+
+            </form>
 
         </section>
 

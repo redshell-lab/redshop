@@ -2,190 +2,327 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <title>Admin - Order Detail</title>
-
-</head>
+<head th:replace="~{fragments/header :: header('Order Details')}"></head>
 
 <body>
 
-<h1>RedShop Admin</h1>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<h2>
-    Order #
-    <span th:text="${order.id}">
-        1
-    </span>
-</h2>
+<main>
 
-<hr>
+    <div class="container">
 
-<h3>Customer</h3>
+        <div class="admin-back-link">
 
-<p>
-    Username:
-    <span th:text="${order.user.username}">
-        ehsan
-    </span>
-</p>
+            <a href="/admin/orders">
+                ← Back to orders
+            </a>
 
-<p>
-    Email:
-    <span th:text="${order.user.email}">
-        ehsan@redshop.local
-    </span>
-</p>
+        </div>
 
-<hr>
 
-<h3>Shipping Address</h3>
+        <div class="admin-page-header">
 
-<p>
-    Full Name:
-    <span th:text="${order.address.fullName}">
-        Ehsan RedShell
-    </span>
-</p>
+            <div>
 
-<p>
-    Street:
-    <span th:text="${order.address.street}">
-        Main Street
-    </span>
-</p>
+                <h1 class="page-title">
 
-<p>
-    City:
-    <span th:text="${order.address.city}">
-        Tehran
-    </span>
-</p>
+                    Order #
+                    <span th:text="${order.id}">
+                        1
+                    </span>
 
-<p>
-    Postal Code:
-    <span th:text="${order.address.postalCode}">
-        1234567890
-    </span>
-</p>
+                </h1>
 
-<p>
-    Phone:
-    <span th:text="${order.address.phone}">
-        09120000000
-    </span>
-</p>
+                <p class="page-subtitle">
+                    Review order details and update its status.
+                </p>
 
-<hr>
+            </div>
 
-<h3>Order Information</h3>
+        </div>
 
-<p>
-    Status:
-    <span th:text="${order.status}">
-        PENDING
-    </span>
-</p>
 
-<p>
-    Total:
-    <span th:text="${order.total}">
-        100.00
-    </span>
-</p>
+        <!-- Order Information -->
 
-<p>
-    Created At:
-    <span th:text="${order.createdAt}">
-        2026-09-22T15:00
-    </span>
-</p>
+        <section class="admin-info-grid">
 
-<hr>
+            <div class="admin-info-card">
 
-<h3>Items</h3>
+                <div class="admin-info-label">
+                    Customer
+                </div>
 
-<table border="1">
+                <div class="admin-info-value"
+                     th:text="${order.user.username}">
+                    username
+                </div>
 
-    <thead>
+            </div>
 
-    <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Unit Price</th>
-        <th>Subtotal</th>
-    </tr>
 
-    </thead>
+            <div class="admin-info-card">
 
-    <tbody>
+                <div class="admin-info-label">
+                    Order Date
+                </div>
 
-    <tr th:each="item : ${order.items}">
+                <div class="admin-info-value"
+                     th:text="${order.createdAt}">
+                    2026-01-01
+                </div>
 
-        <td th:text="${item.product.name}">
-            ThinkPad X1
-        </td>
+            </div>
 
-        <td th:text="${item.quantity}">
-            1
-        </td>
 
-        <td th:text="${item.unitPrice}">
-            1299.99
-        </td>
+            <div class="admin-info-card">
 
-        <td th:text="${item.subtotal}">
-            1299.99
-        </td>
+                <div class="admin-info-label">
+                    Current Status
+                </div>
 
-    </tr>
+                <div>
 
-    </tbody>
+                    <span class="badge badge-neutral"
+                          th:text="${order.status}">
+                        PENDING
+                    </span>
 
-</table>
+                </div>
 
-<hr>
+            </div>
 
-<h3>Update Status</h3>
 
-<form
-        method="post"
-        th:action="@{/admin/orders/{id}/status(id=${order.id})}"
->
+            <div class="admin-info-card">
 
-    <input
-            type="hidden"
-            th:name="${_csrf.parameterName}"
-            th:value="${_csrf.token}"
-    >
+                <div class="admin-info-label">
+                    Total
+                </div>
 
-    <select
-            name="status"
-            required
-    >
+                <div class="admin-info-value">
 
-        <option
-                th:each="status : ${T(com.redshell.redshop.order.OrderStatus).values()}"
-                th:value="${status}"
-                th:text="${status}"
-                th:selected="${status == order.status}">
-        </option>
+                    $
+                    <span th:text="${order.total}">
+                        0.00
+                    </span>
 
-    </select>
+                </div>
 
-    <button type="submit">
-        Update Status
-    </button>
+            </div>
 
-</form>
+        </section>
 
-<br>
 
-<a href="/admin/orders">
-    Back to Orders
-</a>
+        <!-- Status -->
+
+        <section class="admin-form-card admin-order-status-card">
+
+            <h2 class="section-title">
+                Update Status
+            </h2>
+
+            <form
+                    th:action="@{/admin/orders/{id}/status(id=${order.id})}"
+                    method="post">
+
+                <div class="form-group">
+
+                    <label class="form-label"
+                           for="status">
+                        Order Status
+                    </label>
+
+                    <select
+                            id="status"
+                            name="status"
+                            required>
+
+                        <option value="PENDING"
+                                th:selected="${order.status.toString() == 'PENDING'}">
+                            PENDING
+                        </option>
+
+                        <option value="PROCESSING"
+                                th:selected="${order.status.toString() == 'PROCESSING'}">
+                            PROCESSING
+                        </option>
+
+                        <option value="SHIPPED"
+                                th:selected="${order.status.toString() == 'SHIPPED'}">
+                            SHIPPED
+                        </option>
+
+                        <option value="DELIVERED"
+                                th:selected="${order.status.toString() == 'DELIVERED'}">
+                            DELIVERED
+                        </option>
+
+                        <option value="CANCELLED"
+                                th:selected="${order.status.toString() == 'CANCELLED'}">
+                            CANCELLED
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <input
+                        type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}"
+                >
+
+
+                <button
+                        type="submit"
+                        class="btn btn-primary">
+                    Update Status
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- Order Items -->
+
+        <section class="admin-table-card">
+
+            <div class="admin-card-header">
+
+                <div>
+
+                    <h2 class="section-title">
+                        Order Items
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="item : ${order.items}">
+
+                        <td th:text="${item.product.name}">
+                            Product
+                        </td>
+
+                        <td th:text="${item.quantity}">
+                            1
+                        </td>
+
+                        <td>
+
+                            $
+                            <span th:text="${item.product.price}">
+                                0.00
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            $
+                            <span th:text="${item.subtotal}">
+                                0.00
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="admin-order-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+
+                    $
+                    <span th:text="${order.total}">
+                        0.00
+                    </span>
+
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- Shipping Address -->
+
+        <section class="admin-info-card admin-shipping-card">
+
+            <h2 class="section-title">
+                Shipping Address
+            </h2>
+
+            <div class="admin-shipping-address">
+
+                <div th:text="${order.address.fullName}">
+                    John Doe
+                </div>
+
+                <div th:text="${order.address.street}">
+                    123 Main Street
+                </div>
+
+                <div>
+
+                    <span th:text="${order.address.city}">
+                        City
+                    </span>
+
+                    <span>,</span>
+
+                    <span th:text="${order.address.postalCode}">
+                        12345
+                    </span>
+
+                </div>
+
+                <div th:text="${order.address.phone}">
+                    +123456789
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>

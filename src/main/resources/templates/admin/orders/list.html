@@ -2,79 +2,129 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <title>Admin - Orders</title>
-
-</head>
+<head th:replace="~{fragments/header :: header('Manage Orders')}"></head>
 
 <body>
 
-<h1>RedShop Admin</h1>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<h2>Orders</h2>
+<main>
 
-<table border="1">
+    <div class="container">
 
-    <thead>
+        <div class="admin-page-header">
 
-    <tr>
-        <th>ID</th>
-        <th>User</th>
-        <th>Total</th>
-        <th>Status</th>
-        <th>Created At</th>
-        <th>Actions</th>
-    </tr>
+            <div>
 
-    </thead>
+                <h1 class="page-title">
+                    Orders
+                </h1>
 
-    <tbody>
+                <p class="page-subtitle">
+                    Review and manage customer orders.
+                </p>
 
-    <tr th:each="order : ${orders}">
+            </div>
 
-        <td th:text="${order.id}">
-            1
-        </td>
+        </div>
 
-        <td th:text="${order.user.username}">
-            ehsan
-        </td>
 
-        <td th:text="${order.total}">
-            100.00
-        </td>
+        <section class="admin-table-card">
 
-        <td th:text="${order.status}">
-            PENDING
-        </td>
+            <div class="table-wrapper">
 
-        <td th:text="${order.createdAt}">
-            2026-09-22T15:00
-        </td>
+                <table class="data-table">
 
-        <td>
+                    <thead>
 
-            <a
-                    th:href="@{/admin/orders/{id}(id=${order.id})}">
-                View
+                    <tr>
+
+                        <th>Order</th>
+                        <th>User</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="order : ${orders}">
+
+                        <td>
+
+                            <strong>
+                                #
+                                <span th:text="${order.id}">
+                                    1
+                                </span>
+                            </strong>
+
+                        </td>
+
+                        <td th:text="${order.user.username}">
+                            username
+                        </td>
+
+                        <td th:text="${order.createdAt}">
+                            2026-01-01
+                        </td>
+
+                        <td>
+
+                            <span class="badge badge-neutral"
+                                  th:text="${order.status}">
+                                PENDING
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            $
+                            <span th:text="${order.total}">
+                                0.00
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a class="btn btn-secondary btn-sm"
+                               th:href="@{/admin/orders/{id}(id=${order.id})}">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <div class="admin-bottom-actions">
+
+            <a class="btn btn-secondary"
+               href="/admin">
+                ← Dashboard
             </a>
 
-        </td>
+        </div>
 
-    </tr>
+    </div>
 
-    </tbody>
+</main>
 
-</table>
-
-<br>
-
-<a href="/admin">
-    Back to Dashboard
-</a>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>
