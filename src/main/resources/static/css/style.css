@@ -649,3 +649,45 @@ tbody tr:hover {
         padding: 14px 0;
     }
 }
+
+
+/* =========================
+   Cart
+   ========================= */
+
+.quantity-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantity-input {
+    width: 80px;
+    padding: 8px 10px;
+}
+
+.cart-summary {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.cart-summary-row {
+    min-width: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+}
+
+.cart-total {
+    font-size: 20px;
+    color: var(--text);
+}
+
+.btn-sm {
+    padding: 7px 12px;
+    font-size: 13px;
+}

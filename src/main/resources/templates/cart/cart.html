@@ -1,138 +1,241 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Shopping Cart - RedShop</title>
-</head>
+<head th:replace="~{fragments/header :: header('Shopping Cart')}"></head>
 
 <body>
 
-<h1>Shopping Cart</h1>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<p>
-    <a href="/products">Products</a>
-    |
-    <a href="/account">My Account</a>
-    |
-    <a href="/orders">My Orders</a>
-</p>
+<main>
 
-<div th:if="${cart.items.isEmpty()}">
+    <div class="container">
 
-    <p>Your cart is empty.</p>
+        <div class="mb-lg">
 
-</div>
+            <h1 class="page-title">
+                Shopping Cart
+            </h1>
 
-<div th:unless="${cart.items.isEmpty()}">
+            <p class="page-subtitle">
+                Review your items before checkout.
+            </p>
 
-    <table border="1" cellpadding="10">
+        </div>
 
-        <thead>
-        <tr>
-            <th>Product</th>
-            <th>Unit Price</th>
-            <th>Quantity</th>
-            <th>Subtotal</th>
-            <th>Action</th>
-        </tr>
-        </thead>
+        <!-- Empty Cart -->
 
-        <tbody>
+        <div class="card"
+             th:if="${cart.items.isEmpty()}">
 
-        <tr th:each="item : ${cart.items}">
+            <div class="empty-state">
 
-            <td>
-                <a
-                        th:href="@{/products/{id}(id=${item.product.id})}"
-                        th:text="${item.product.name}">
-                    Product
+                <h2 class="section-title">
+                    Your cart is empty
+                </h2>
+
+                <p class="text-secondary">
+                    There are no products in your shopping cart yet.
+                </p>
+
+                <a class="btn btn-primary mt-md"
+                   href="/products">
+                    Browse Products
                 </a>
-            </td>
 
-            <td th:text="${item.product.price}">
-                0.00
-            </td>
+            </div>
 
-            <td>
+        </div>
 
-                <form th:action="@{/cart/update}" method="post">
 
-                    <input
-                            type="hidden"
-                            name="itemId"
-                            th:value="${item.id}"
-                    >
+        <!-- Cart -->
 
-                    <input
-                            type="number"
-                            name="quantity"
-                            min="0"
-                            th:value="${item.quantity}"
-                    >
+        <div th:unless="${cart.items.isEmpty()}">
 
-                    <input
-                            type="hidden"
-                            th:name="${_csrf.parameterName}"
-                            th:value="${_csrf.token}"
-                    >
+            <div class="table-wrapper">
 
-                    <button type="submit">
-                        Update
-                    </button>
+                <table class="data-table">
 
-                </form>
+                    <thead>
 
-            </td>
+                    <tr>
 
-            <td th:text="${item.subtotal}">
-                0.00
-            </td>
+                        <th>
+                            Product
+                        </th>
 
-            <td>
+                        <th>
+                            Unit Price
+                        </th>
 
-                <form th:action="@{/cart/remove}" method="post">
+                        <th>
+                            Quantity
+                        </th>
 
-                    <input
-                            type="hidden"
-                            name="itemId"
-                            th:value="${item.id}"
-                    >
+                        <th>
+                            Subtotal
+                        </th>
 
-                    <input
-                            type="hidden"
-                            th:name="${_csrf.parameterName}"
-                            th:value="${_csrf.token}"
-                    >
+                        <th>
+                            Action
+                        </th>
 
-                    <button type="submit">
-                        Remove
-                    </button>
+                    </tr>
 
-                </form>
+                    </thead>
 
-            </td>
+                    <tbody>
 
-        </tr>
+                    <tr th:each="item : ${cart.items}">
 
-        </tbody>
+                        <td>
 
-    </table>
+                            <a class="table-link"
+                               th:href="@{/products/{id}(id=${item.product.id})}"
+                               th:text="${item.product.name}">
+                                Product
+                            </a>
 
-    <h2>
-        Total:
-        $<span th:text="${cart.total}">0.00</span>
-    </h2>
+                        </td>
 
-    <p>
-        <a href="/checkout">
-            Proceed to Checkout
-        </a>
-    </p>
+                        <td>
 
-</div>
+                            $
+                            <span th:text="${item.product.price}">
+                                0.00
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <form th:action="@{/cart/update}"
+                                  method="post"
+                                  class="quantity-form">
+
+                                <input
+                                        type="number"
+                                        name="quantity"
+                                        min="0"
+                                        th:value="${item.quantity}"
+                                        class="quantity-input"
+                                >
+
+                                <input
+                                        type="hidden"
+                                        name="itemId"
+                                        th:value="${item.id}"
+                                >
+
+                                <input
+                                        type="hidden"
+                                        th:name="${_csrf.parameterName}"
+                                        th:value="${_csrf.token}"
+                                >
+
+                                <button
+                                        type="submit"
+                                        class="btn btn-secondary btn-sm">
+                                    Update
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                        <td>
+
+                            $
+                            <span th:text="${item.subtotal}">
+                                0.00
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <form th:action="@{/cart/remove}"
+                                  method="post">
+
+                                <input
+                                        type="hidden"
+                                        name="itemId"
+                                        th:value="${item.id}"
+                                >
+
+                                <input
+                                        type="hidden"
+                                        th:name="${_csrf.parameterName}"
+                                        th:value="${_csrf.token}"
+                                >
+
+                                <button
+                                        type="submit"
+                                        class="btn btn-danger btn-sm">
+                                    Remove
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- Cart Summary -->
+
+            <section class="cart-summary">
+
+                <div class="cart-summary-row">
+
+                    <span class="text-secondary">
+                        Total
+                    </span>
+
+                    <strong class="cart-total">
+
+                        $
+                        <span th:text="${cart.total}">
+                            0.00
+                        </span>
+
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- Actions -->
+
+            <div class="flex gap-md mt-lg">
+
+                <a class="btn btn-secondary"
+                   href="/products">
+                    Continue Shopping
+                </a>
+
+                <a class="btn btn-primary"
+                   href="/checkout">
+                    Proceed to Checkout
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>
