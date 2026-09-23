@@ -749,6 +749,7 @@ tbody tr:hover {
    ========================================================= */
 
 .site-footer {
+    min-height: 70px;
     border-top: 1px solid var(--border);
     background: var(--surface);
 }
