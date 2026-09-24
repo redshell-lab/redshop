@@ -133,4 +133,25 @@ public class UserService {
 
         userRepository.delete(user);
     }
+
+    public User updateProfile(
+            Long userId,
+            String email,
+            String firstName,
+            String lastName
+    ) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!user.getEmail().equals(email)
+                && userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+
+        user.setEmail(email);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+
+        return userRepository.save(user);
+    }
 }
