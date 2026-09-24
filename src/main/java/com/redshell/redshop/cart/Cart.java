@@ -1,5 +1,6 @@
 package com.redshell.redshop.cart;
 
+import com.redshell.redshop.coupon.Coupon;
 import com.redshell.redshop.user.User;
 import jakarta.persistence.*;
 
@@ -26,6 +27,13 @@ public class Cart {
     )
     private List<CartItem> items = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_id")
+    private Coupon appliedCoupon;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal discount = BigDecimal.ZERO;
+
     public Cart() {
     }
 
@@ -45,6 +53,22 @@ public class Cart {
         return items;
     }
 
+    public Coupon getAppliedCoupon() {
+        return appliedCoupon;
+    }
+
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    public void setAppliedCoupon(Coupon appliedCoupon) {
+        this.appliedCoupon = appliedCoupon;
+    }
+
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
+    }
+
     public void addItem(CartItem item) {
         items.add(item);
         item.setCart(this);
@@ -55,9 +79,15 @@ public class Cart {
         item.setCart(null);
     }
 
-    public BigDecimal getTotal() {
+    public BigDecimal getSubtotal() {
         return items.stream()
                 .map(CartItem::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getTotal() {
+        return getSubtotal()
+                .subtract(discount)
+                .max(BigDecimal.ZERO);
     }
 }

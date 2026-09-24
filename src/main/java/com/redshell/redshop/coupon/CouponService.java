@@ -57,6 +57,19 @@ public class CouponService {
             );
         }
 
+        BigDecimal discount =
+                calculateDiscount(coupon, subtotal);
+
+        return new CouponCalculation(
+                coupon,
+                discount
+        );
+    }
+
+    public BigDecimal calculateDiscount(
+            Coupon coupon,
+            BigDecimal subtotal
+    ) {
         BigDecimal discount;
 
         if (coupon.getDiscountType() == DiscountType.PERCENTAGE) {
@@ -75,14 +88,9 @@ public class CouponService {
                     .min(subtotal);
         }
 
-        discount = discount.setScale(
+        return discount.setScale(
                 2,
                 RoundingMode.HALF_UP
-        );
-
-        return new CouponCalculation(
-                coupon,
-                discount
         );
     }
 }

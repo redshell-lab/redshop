@@ -188,26 +188,110 @@
 
             </div>
 
+            <section class="card mt-lg">
+                <div class="card-body">
+
+                    <h2 class="section-title">
+                        Coupon
+                    </h2>
+
+                    <div th:if="${cart.appliedCoupon == null}">
+
+                        <form th:action="@{/cart/coupon}"
+                              method="post"
+                              class="product-search">
+
+                            <input type="text"
+                                   name="code"
+                                   placeholder="Enter coupon code"
+                                   required>
+
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}">
+
+                            <button type="submit"
+                                    class="btn btn-secondary">
+                                Apply Coupon
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    <div th:if="${cart.appliedCoupon != null}">
+
+                        <p class="text-secondary">
+                            Coupon
+                            <strong th:text="${cart.appliedCoupon.code}">
+                                SAVE20
+                            </strong>
+                            applied.
+                        </p>
+
+                        <form th:action="@{/cart/coupon/remove}"
+                              method="post">
+
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}">
+
+                            <button type="submit"
+                                    class="btn btn-secondary">
+                                Remove Coupon
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </section>
+
 
             <!-- Cart Summary -->
 
             <section class="cart-summary">
 
                 <div class="cart-summary-row">
+        <span class="text-secondary">
+            Subtotal
+        </span>
 
-                    <span class="text-secondary">
-                        Total
-                    </span>
+                    <span>
+            $
+            <span th:text="${cart.subtotal}">
+                0.00
+            </span>
+        </span>
+                </div>
+
+                <div class="cart-summary-row"
+                     th:if="${cart.appliedCoupon != null}">
+
+        <span class="text-secondary">
+            Discount
+        </span>
+
+                    <span>
+            -$
+            <span th:text="${cart.discount}">
+                0.00
+            </span>
+        </span>
+                </div>
+
+                <div class="cart-summary-row">
+        <span class="text-secondary">
+            Total
+        </span>
 
                     <strong class="cart-total">
-
                         $
                         <span th:text="${cart.total}">
-                            0.00
-                        </span>
-
+                0.00
+            </span>
                     </strong>
-
                 </div>
 
             </section>

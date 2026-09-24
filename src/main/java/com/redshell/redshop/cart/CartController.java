@@ -76,4 +76,28 @@ public class CartController {
 
         return "redirect:/cart";
     }
+
+    @PostMapping("/coupon")
+    public String applyCoupon(
+            Principal principal,
+            @RequestParam String code
+    ) {
+        cartService.applyCoupon(
+                principal.getName(),
+                code
+        );
+
+        return "redirect:/cart";
+    }
+
+    @PostMapping("/coupon/remove")
+    public String removeCoupon(
+            Principal principal
+    ) {
+        cartService.removeCoupon(
+                principal.getName()
+        );
+
+        return "redirect:/cart";
+    }
 }
