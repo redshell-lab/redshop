@@ -28,6 +28,9 @@ public class User {
     @Column(nullable = false)
     private String role = "USER";
 
+    @Column(length = 255)
+    private String avatarFilename;
+
     public User() {
     }
 
@@ -97,5 +100,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getAvatarFilename() {
+        return avatarFilename;
+    }
+
+    public void setAvatarFilename(String avatarFilename) {
+        this.avatarFilename = avatarFilename;
     }
 }
