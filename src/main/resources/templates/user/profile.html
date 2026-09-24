@@ -125,6 +125,15 @@
                     Avatar
                 </h2>
 
+                <div class="mb-lg"
+                     th:if="${user.avatarFilename != null}">
+
+                    <img th:src="@{/account/avatar}"
+                         alt="Profile avatar"
+                         style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 1px solid var(--border);">
+
+                </div>
+
                 <p class="text-secondary">
                     Upload a profile avatar.
                 </p>
