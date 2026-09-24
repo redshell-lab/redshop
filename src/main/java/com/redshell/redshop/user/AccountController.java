@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AccountController {
 
     private final UserService userService;
-    private final AddressService addressService;
+    private final UserAddressService userAddressService;
 
     public AccountController(
             UserService userService,
-            AddressService addressService
+            UserAddressService userAddressService
     ) {
         this.userService = userService;
-        this.addressService = addressService;
+        this.userAddressService = userAddressService;
     }
 
     @GetMapping("/account")
@@ -113,7 +113,7 @@ public class AccountController {
                 authentication.getName()
         );
 
-        Address address = addressService.findByUserId(
+        UserAddress address = userAddressService.findByUserId(
                 user.getId()
         );
 
@@ -134,7 +134,7 @@ public class AccountController {
                 authentication.getName()
         );
 
-        addressService.saveOrUpdate(
+        userAddressService.saveOrUpdate(
                 user.getId(),
                 addressLine,
                 city,

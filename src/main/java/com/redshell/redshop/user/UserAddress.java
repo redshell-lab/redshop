@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "addresses")
-public class Address {
+public class UserAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +26,9 @@ public class Address {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    public Address() {}
+    public UserAddress() {}
 
-    public Address(
+    public UserAddress(
             String addressLine,
             String city,
             String postalCode,

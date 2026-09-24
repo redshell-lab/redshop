@@ -37,7 +37,7 @@ A cart belongs to a user. Cart items reference products and quantities.
 
 ## Order
 
-Fields: user, address, status, total, createdAt, items.
+Fields: user, userAddress, status, total, createdAt, items.
 
 Status is stored using `EnumType.STRING`.
 
@@ -49,7 +49,7 @@ Fields: order, product, quantity, unitPrice. Subtotal is `unitPrice × quantity`
 
 Fields: fullName, street, city, postalCode, phone.
 
-The order owns its address through a cascading one-to-one relationship.
+The order owns its userAddress through a cascading one-to-one relationship.
 
 ## Persistence Behavior
 

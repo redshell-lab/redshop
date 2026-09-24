@@ -286,31 +286,31 @@
                 Shipping Address
             </h2>
 
-            <div class="admin-shipping-address">
+            <div class="admin-shipping-userAddress">
 
-                <div th:text="${order.address.fullName}">
+                <div th:text="${order.userAddress.fullName}">
                     John Doe
                 </div>
 
-                <div th:text="${order.address.street}">
+                <div th:text="${order.userAddress.street}">
                     123 Main Street
                 </div>
 
                 <div>
 
-                    <span th:text="${order.address.city}">
+                    <span th:text="${order.userAddress.city}">
                         City
                     </span>
 
                     <span>,</span>
 
-                    <span th:text="${order.address.postalCode}">
+                    <span th:text="${order.userAddress.postalCode}">
                         12345
                     </span>
 
                 </div>
 
-                <div th:text="${order.address.phone}">
+                <div th:text="${order.userAddress.phone}">
                     +123456789
                 </div>
 

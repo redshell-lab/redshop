@@ -3,26 +3,26 @@ package com.redshell.redshop.user;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddressService {
+public class UserAddressService {
 
-    private final AddressRepository addressRepository;
+    private final UserAddressRepository userAddressRepository;
     private final UserRepository userRepository;
 
-    public AddressService(
-            AddressRepository addressRepository,
+    public UserAddressService(
+            UserAddressRepository userAddressRepository,
             UserRepository userRepository
     ) {
-        this.addressRepository = addressRepository;
+        this.userAddressRepository = userAddressRepository;
         this.userRepository = userRepository;
     }
 
-    public Address findByUserId(Long userId) {
-        return addressRepository
+    public UserAddress findByUserId(Long userId) {
+        return userAddressRepository
                 .findByUserId(userId)
                 .orElse(null);
     }
 
-    public Address saveOrUpdate(
+    public UserAddress saveOrUpdate(
             Long userId,
             String addressLine,
             String city,
@@ -33,10 +33,10 @@ public class AddressService {
                 .orElseThrow(() ->
                         new IllegalArgumentException("User not found"));
 
-        Address address = addressRepository
+        UserAddress userAddress = userAddressRepository
                 .findByUserId(userId)
                 .orElseGet(() ->
-                        new Address(
+                        new UserAddress(
                                 addressLine,
                                 city,
                                 postalCode,
@@ -45,11 +45,11 @@ public class AddressService {
                         )
                 );
 
-        address.setAddressLine(addressLine);
-        address.setCity(city);
-        address.setPostalCode(postalCode);
-        address.setCountry(country);
+        userAddress.setAddressLine(addressLine);
+        userAddress.setCity(city);
+        userAddress.setPostalCode(postalCode);
+        userAddress.setCountry(country);
 
-        return addressRepository.save(address);
+        return userAddressRepository.save(userAddress);
     }
 }

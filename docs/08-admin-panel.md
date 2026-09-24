@@ -46,7 +46,7 @@ GET  /admin/orders/{id}
 POST /admin/orders/{id}/status
 ```
 
-The order detail page displays customer, address, order information, items and status update controls.
+The order detail page displays customer, userAddress, order information, items and status update controls.
 
 ## CSRF
 
