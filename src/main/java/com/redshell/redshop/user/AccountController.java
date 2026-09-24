@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AccountController {
 
     private final UserService userService;
+    private final AddressService addressService;
 
-    public AccountController(UserService userService) {
+    public AccountController(
+            UserService userService,
+            AddressService addressService
+    ) {
         this.userService = userService;
+        this.addressService = addressService;
     }
 
     @GetMapping("/account")
@@ -97,5 +102,46 @@ public class AccountController {
         }
 
         return "redirect:/account/password?updated";
+    }
+
+    @GetMapping("/account/address")
+    public String address(
+            Authentication authentication,
+            Model model
+    ) {
+        User user = userService.findByUsername(
+                authentication.getName()
+        );
+
+        Address address = addressService.findByUserId(
+                user.getId()
+        );
+
+        model.addAttribute("address", address);
+
+        return "user/address";
+    }
+
+    @PostMapping("/account/address")
+    public String updateAddress(
+            Authentication authentication,
+            @RequestParam String addressLine,
+            @RequestParam String city,
+            @RequestParam String postalCode,
+            @RequestParam String country
+    ) {
+        User user = userService.findByUsername(
+                authentication.getName()
+        );
+
+        addressService.saveOrUpdate(
+                user.getId(),
+                addressLine,
+                city,
+                postalCode,
+                country
+        );
+
+        return "redirect:/account/address?updated";
     }
 }
