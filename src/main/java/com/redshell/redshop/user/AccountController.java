@@ -64,4 +64,38 @@ public class AccountController {
 
         return "redirect:/account/profile?updated";
     }
+
+
+    @GetMapping("/account/password")
+    public String passwordPage() {
+        return "user/password";
+    }
+
+    @PostMapping("/account/password")
+    public String changePassword(
+            Authentication authentication,
+            @RequestParam String currentPassword,
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword
+    ) {
+        if (!newPassword.equals(confirmPassword)) {
+            return "redirect:/account/password?mismatch";
+        }
+
+        User user = userService.findByUsername(
+                authentication.getName()
+        );
+
+        try {
+            userService.changePassword(
+                    user.getId(),
+                    currentPassword,
+                    newPassword
+            );
+        } catch (IllegalArgumentException e) {
+            return "redirect:/account/password?error";
+        }
+
+        return "redirect:/account/password?updated";
+    }
 }
