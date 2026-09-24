@@ -7,6 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.springframework.http.ResponseEntity;
 
 @Controller
 public class AccountController {
@@ -165,5 +172,47 @@ public class AccountController {
         userService.save(user);
 
         return "redirect:/account/profile?avatarUpdated";
+    }
+
+    @GetMapping("/account/avatar")
+    public ResponseEntity<Resource> avatar(
+            Authentication authentication
+    ) {
+        User user = userService.findByUsername(authentication.getName());
+
+        if (user.getAvatarFilename() == null
+                || user.getAvatarFilename().isBlank()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Path uploadDirectory =
+                Paths.get("/app/uploads/avatars")
+                        .toAbsolutePath()
+                        .normalize();
+
+        Path avatarPath =
+                uploadDirectory
+                        .resolve(user.getAvatarFilename())
+                        .normalize();
+
+        if (!avatarPath.startsWith(uploadDirectory)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        try {
+            Resource resource =
+                    new UrlResource(avatarPath.toUri());
+
+            if (!resource.exists()
+                    || !resource.isReadable()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok()
+                    .body(resource);
+
+        } catch (MalformedURLException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
