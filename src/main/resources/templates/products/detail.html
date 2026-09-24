@@ -107,13 +107,21 @@
 
         <section class="reviews-section">
 
-            <div class="mb-md">
-                <h2 class="section-title">Reviews</h2>
+            <div class="reviews-heading">
+                <div>
+                    <h2 class="section-title">Reviews</h2>
 
-                <p class="page-subtitle"
-                   th:if="${#lists.isEmpty(reviews)}">
-                    No reviews yet.
-                </p>
+                    <p class="reviews-subtitle"
+                       th:if="${!#lists.isEmpty(reviews)}">
+                        What customers are saying about this product.
+                    </p>
+                </div>
+
+                <span class="reviews-count"
+                      th:if="${!#lists.isEmpty(reviews)}"
+                      th:text="${#lists.size(reviews) + ' reviews'}">
+            1 review
+        </span>
             </div>
 
             <div class="reviews-list"
@@ -124,33 +132,53 @@
 
                     <div class="review-header">
 
-                        <strong class="review-author"
-                                th:text="${review.user.firstName + ' ' + review.user.lastName}">
-                            User Name
-                        </strong>
+                        <div class="review-author-wrapper">
+                            <div class="review-avatar"
+                                 th:text="${#strings.substring(review.user.firstName, 0, 1)}">
+                                E
+                            </div>
 
-                        <time class="review-date"
-                              th:text="${#temporals.format(review.createdAt, 'MMM d, yyyy')}">
-                            Sep 24, 2026
-                        </time>
+                            <div>
+                                <strong class="review-author"
+                                        th:text="${review.user.firstName + ' ' + review.user.lastName}">
+                                    Ehsan RedShell
+                                </strong>
+
+                                <time class="review-date"
+                                      th:text="${#temporals.format(review.createdAt, 'MMM d, yyyy')}">
+                                    Sep 24, 2026
+                                </time>
+                            </div>
+                        </div>
 
                     </div>
 
                     <p class="review-content"
                        th:text="${review.content}">
-                        Review content
+                        Very nice product
                     </p>
 
                 </article>
 
             </div>
 
+            <p class="reviews-empty"
+               th:if="${#lists.isEmpty(reviews)}">
+                No reviews yet. Be the first to share your experience.
+            </p>
+
 
             <div class="card review-form-card">
 
-                <h2 class="section-title">
-                    Write a Review
-                </h2>
+                <div class="review-form-header">
+                    <h2 class="section-title">
+                        Write a Review
+                    </h2>
+
+                    <p class="reviews-subtitle">
+                        Share your experience with this product.
+                    </p>
+                </div>
 
                 <form
                         th:action="@{/products/{productId}/reviews(productId=${product.id})}"
@@ -170,7 +198,7 @@
                                 rows="5"
                                 maxlength="2000"
                                 required
-                                placeholder="Share your experience with this product..."></textarea>
+                                placeholder="What did you think about this product?"></textarea>
 
                     </div>
 
