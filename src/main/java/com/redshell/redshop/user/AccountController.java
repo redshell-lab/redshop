@@ -6,19 +6,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class AccountController {
 
     private final UserService userService;
     private final UserAddressService userAddressService;
+    private final AvatarService avatarService;
 
     public AccountController(
             UserService userService,
-            UserAddressService userAddressService
+            UserAddressService userAddressService,
+            AvatarService avatarService
     ) {
         this.userService = userService;
         this.userAddressService = userAddressService;
+        this.avatarService = avatarService;
     }
 
     @GetMapping("/account")
@@ -69,7 +73,6 @@ public class AccountController {
 
         return "redirect:/account/profile?updated";
     }
-
 
     @GetMapping("/account/password")
     public String passwordPage() {
@@ -143,5 +146,24 @@ public class AccountController {
         );
 
         return "redirect:/account/address?updated";
+    }
+
+    @PostMapping("/account/avatar")
+    public String uploadAvatar(
+            Authentication authentication,
+            @RequestParam("avatar") MultipartFile avatar
+    ) {
+        User user = userService.findByUsername(
+                authentication.getName()
+        );
+
+        String filename =
+                avatarService.saveAvatar(avatar);
+
+        user.setAvatarFilename(filename);
+
+        userService.save(user);
+
+        return "redirect:/account/profile?avatarUpdated";
     }
 }
