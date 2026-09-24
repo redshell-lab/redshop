@@ -9,24 +9,21 @@
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <main>
-
     <div class="container">
 
         <div class="mb-lg">
-
             <h1 class="page-title">
                 Address
             </h1>
 
             <p class="page-subtitle">
-                Manage your shipping userAddress.
+                Manage your shipping address.
             </p>
-
         </div>
 
         <div class="alert alert-success"
              th:if="${param.updated}">
-            Your userAddress has been updated successfully.
+            Your address has been updated successfully.
         </div>
 
         <section class="card">
@@ -50,8 +47,8 @@
                         <input type="text"
                                id="addressLine"
                                name="addressLine"
-                               th:value="${userAddress != null ? userAddress.addressLine : ''}"
-                               autocomplete="street-userAddress"
+                               th:value="${address != null ? address.addressLine : ''}"
+                               autocomplete="street-address"
                                required>
 
                     </div>
@@ -66,8 +63,8 @@
                         <input type="text"
                                id="city"
                                name="city"
-                               th:value="${userAddress != null ? userAddress.city : ''}"
-                               autocomplete="userAddress-level2"
+                               th:value="${address != null ? address.city : ''}"
+                               autocomplete="address-level2"
                                required>
 
                     </div>
@@ -82,7 +79,7 @@
                         <input type="text"
                                id="postalCode"
                                name="postalCode"
-                               th:value="${userAddress != null ? userAddress.postalCode : ''}"
+                               th:value="${address != null ? address.postalCode : ''}"
                                autocomplete="postal-code"
                                required>
 
@@ -98,7 +95,7 @@
                         <input type="text"
                                id="country"
                                name="country"
-                               th:value="${userAddress != null ? userAddress.country : ''}"
+                               th:value="${address != null ? address.country : ''}"
                                autocomplete="country-name"
                                required>
 
@@ -129,10 +126,10 @@
         </section>
 
     </div>
-
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
+
 </html>
