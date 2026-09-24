@@ -3,7 +3,7 @@ package com.redshell.redshop.user;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "addresses")
+@Table(name = "user_addresses")
 public class UserAddress {
 
     @Id
