@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/header :: header('My Account')}"></head>
+<head th:replace="~{fragments/header :: header('Profile')}"></head>
 
 <body>
 
@@ -15,7 +15,7 @@
         <div class="mb-lg">
 
             <h1 class="page-title">
-                My Account
+                Profile
             </h1>
 
             <p class="page-subtitle">
@@ -29,7 +29,7 @@
             <div class="card-body">
 
                 <h2 class="section-title">
-                    Profile
+                    Account Information
                 </h2>
 
                 <div class="account-details">
@@ -86,29 +86,7 @@
 
                     </div>
 
-                    <div class="form-group">
-
-                        <label class="form-label">
-                            Role
-                        </label>
-
-                        <div>
-
-                            <span class="badge badge-neutral"
-                                  th:text="${user.role}">
-                                USER
-                            </span>
-
-                        </div>
-
-                    </div>
-
                 </div>
-
-                <a class="btn btn-secondary"
-                   href="/account/profile">
-                    View Profile
-                </a>
 
             </div>
 
@@ -117,31 +95,14 @@
         <div class="flex gap-md mt-lg">
 
             <a class="btn btn-secondary"
-               href="/products">
-                Continue Shopping
+               href="/account">
+                ← My Account
             </a>
 
             <a class="btn btn-secondary"
-               href="/orders">
-                My Orders
+               href="/products">
+                Continue Shopping
             </a>
-
-            <form th:action="@{/logout}"
-                  method="post">
-
-                <input
-                        type="hidden"
-                        th:name="${_csrf.parameterName}"
-                        th:value="${_csrf.token}"
-                >
-
-                <button
-                        type="submit"
-                        class="btn btn-danger">
-                    Logout
-                </button>
-
-            </form>
 
         </div>
 

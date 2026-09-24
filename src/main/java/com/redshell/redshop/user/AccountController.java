@@ -27,4 +27,18 @@ public class AccountController {
 
         return "user/account";
     }
+
+    @GetMapping("/account/profile")
+    public String profile(
+            Authentication authentication,
+            Model model
+    ) {
+        User user = userService.findByUsername(
+                authentication.getName()
+        );
+
+        model.addAttribute("user", user);
+
+        return "user/profile";
+    }
 }
