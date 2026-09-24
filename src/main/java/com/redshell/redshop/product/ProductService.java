@@ -18,6 +18,19 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product> search(String keyword) {
+
+        if (keyword == null || keyword.isBlank()) {
+            return productRepository.findAll();
+        }
+
+        return productRepository
+                .findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
+                        keyword,
+                        keyword
+                );
+    }
+
     public Product findById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));

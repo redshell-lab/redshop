@@ -13,11 +13,35 @@
     <div class="container">
 
         <div class="mb-md">
-            <h1 class="page-title">Products</h1>
+
+            <h1 class="page-title">
+                Products
+            </h1>
 
             <p class="page-subtitle">
                 Explore products available in RedShop.
             </p>
+
+            <form
+                    method="get"
+                    action="/products"
+                    class="product-search">
+
+                <input
+                        type="search"
+                        name="search"
+                        th:value="${search}"
+                        placeholder="Search products..."
+                        aria-label="Search products">
+
+                <button
+                        type="submit"
+                        class="btn btn-primary">
+                    Search
+                </button>
+
+            </form>
+
         </div>
 
         <div class="product-grid">

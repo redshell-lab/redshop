@@ -1362,3 +1362,27 @@ tbody tr:hover {
         justify-content: space-between;
     }
 }
+
+
+/* =========================================================
+    Responsive
+========================================================= */
+
+.product-search {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    max-width: 620px;
+
+    margin-top: 20px;
+}
+
+.product-search input {
+    flex: 1;
+}
+
+.product-search .btn {
+    flex-shrink: 0;
+}

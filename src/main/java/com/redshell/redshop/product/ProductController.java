@@ -19,8 +19,17 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public String products(Model model) {
-        model.addAttribute("products", productService.findAll());
+    public String products(
+            @RequestParam(required = false) String search,
+            Model model
+    ) {
+        model.addAttribute(
+                "products",
+                productService.search(search)
+        );
+
+        model.addAttribute("search", search);
+
         return "products/list";
     }
 
