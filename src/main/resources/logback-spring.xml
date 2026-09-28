@@ -12,8 +12,6 @@
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
 
 
-    <!-- ==================== Console ==================== -->
-
     <appender name="CONSOLE"
               class="ch.qos.logback.core.ConsoleAppender">
 
@@ -23,8 +21,6 @@
 
     </appender>
 
-
-    <!-- ==================== Rolling File ==================== -->
 
     <appender name="ROLLING_FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -39,9 +35,7 @@
             </fileNamePattern>
 
             <maxFileSize>10MB</maxFileSize>
-
             <maxHistory>30</maxHistory>
-
             <totalSizeCap>500MB</totalSizeCap>
 
         </rollingPolicy>
@@ -53,13 +47,14 @@
     </appender>
 
 
-    <!-- ==================== Application ==================== -->
-
+    <!-- RedShop application logs -->
     <logger name="com.redshell.redshop"
             level="INFO"/>
 
+    <!-- Spring Security logs -->
+    <logger name="org.springframework.security"
+            level="INFO"/>
 
-    <!-- ==================== Root ==================== -->
 
     <root level="WARN">
 

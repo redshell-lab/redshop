@@ -121,6 +121,7 @@ deploy:
            --restart unless-stopped \
            --network redshop-net \
            -p 127.0.0.1:8080:8080 \
+           -v /home/app/redshop/logs:/app/logs \
            $IMAGE"
 
     - |
