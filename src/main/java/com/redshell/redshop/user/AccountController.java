@@ -15,6 +15,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
 @Controller
 public class AccountController {
 
@@ -80,6 +82,19 @@ public class AccountController {
 
         return "redirect:/account/profile?updated";
     }
+
+    @GetMapping("/profile/{id}")
+    public String viewProfile(
+            @PathVariable Long id,
+            Model model
+    ) {
+        User user = userService.findById(id);
+
+        model.addAttribute("user", user);
+
+        return "user/view-profile";
+    }
+
 
     @GetMapping("/account/password")
     public String passwordPage() {

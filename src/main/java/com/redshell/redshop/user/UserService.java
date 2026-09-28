@@ -55,6 +55,13 @@ public class UserService {
                         new IllegalArgumentException("User not found"));
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("User not found")
+                );
+    }
+
     public User create(
             String username,
             String email,
