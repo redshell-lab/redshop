@@ -1,5 +1,7 @@
 package com.redshell.redshop.product;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -8,6 +10,9 @@ import java.util.List;
 @Service
 public class ProductService {
 
+    private static final Logger log =
+            LoggerFactory.getLogger(ProductService.class);
+
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
@@ -15,14 +20,22 @@ public class ProductService {
     }
 
     public List<Product> findAll() {
+
+        log.info("Fetching all products");
+
         return productRepository.findAll();
     }
 
     public List<Product> search(String keyword) {
 
         if (keyword == null || keyword.isBlank()) {
+
+            log.info("Product search requested without keyword");
+
             return productRepository.findAll();
         }
+
+        log.info("Searching products with keyword='{}'", keyword);
 
         return productRepository
                 .findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
@@ -32,8 +45,14 @@ public class ProductService {
     }
 
     public Product findById(Long id) {
+
+        log.info("Fetching product with id={}", id);
+
         return productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(() -> {
+                    log.warn("Product not found with id={}", id);
+                    return new IllegalArgumentException("Product not found");
+                });
     }
 
     public Product create(
@@ -43,6 +62,15 @@ public class ProductService {
             Integer stock,
             Category category
     ) {
+
+        log.info(
+                "Creating product: name='{}', price={}, stock={}, categoryId={}",
+                name,
+                price,
+                stock,
+                category != null ? category.getId() : null
+        );
+
         Product product = new Product(
                 name,
                 description,
@@ -51,7 +79,11 @@ public class ProductService {
                 category
         );
 
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+
+        log.info("Product created successfully with id={}", savedProduct.getId());
+
+        return savedProduct;
     }
 
     public Product update(
@@ -63,10 +95,20 @@ public class ProductService {
             Category category
     ) {
 
+        log.info(
+                "Updating product: id={}, name='{}', price={}, stock={}, categoryId={}",
+                id,
+                name,
+                price,
+                stock,
+                category != null ? category.getId() : null
+        );
+
         Product product = productRepository.findById(id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Product not found")
-                );
+                .orElseThrow(() -> {
+                    log.warn("Product not found for update with id={}", id);
+                    return new IllegalArgumentException("Product not found");
+                });
 
         product.setName(name);
         product.setDescription(description);
@@ -74,17 +116,25 @@ public class ProductService {
         product.setStock(stock);
         product.setCategory(category);
 
-        return productRepository.save(product);
-    }
+        Product updatedProduct = productRepository.save(product);
 
+        log.info("Product updated successfully with id={}", id);
+
+        return updatedProduct;
+    }
 
     public void delete(Long id) {
 
+        log.info("Deleting product with id={}", id);
+
         Product product = productRepository.findById(id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Product not found")
-                );
+                .orElseThrow(() -> {
+                    log.warn("Product not found for deletion with id={}", id);
+                    return new IllegalArgumentException("Product not found");
+                });
 
         productRepository.delete(product);
+
+        log.info("Product deleted successfully with id={}", id);
     }
 }
