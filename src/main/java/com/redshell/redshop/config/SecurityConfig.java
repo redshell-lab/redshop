@@ -72,7 +72,7 @@ public class SecurityConfig {
 
                             if (authentication != null) {
                                 securityLog.info(
-                                        "SECURITY_EVENT LOGOUT user={} ip={}",
+                                        "LOGOUT user={} ip={}",
                                         authentication.getName(),
                                         request.getRemoteAddr()
                                 );
@@ -102,7 +102,7 @@ public class SecurityConfig {
                             : "anonymous";
 
             securityLog.warn(
-                    "SECURITY_EVENT ACCESS_DENIED user={} ip={} method={} uri={}",
+                    "ACCESS_DENIED user={} ip={} method={} uri={}",
                     username,
                     request.getRemoteAddr(),
                     request.getMethod(),

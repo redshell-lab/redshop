@@ -87,7 +87,7 @@ public class ProductService {
         Product savedProduct = productRepository.save(product);
 
         auditLog.info(
-                "AUDIT_EVENT PRODUCT_CREATED user={} productId={}",
+                "PRODUCT_CREATED user={} productId={}",
                 currentUsername(),
                 savedProduct.getId()
         );
@@ -128,7 +128,7 @@ public class ProductService {
         Product updatedProduct = productRepository.save(product);
 
         auditLog.info(
-                "AUDIT_EVENT PRODUCT_UPDATED user={} productId={}",
+                "PRODUCT_UPDATED user={} productId={}",
                 currentUsername(),
                 updatedProduct.getId()
         );
@@ -149,7 +149,7 @@ public class ProductService {
         productRepository.delete(product);
 
         auditLog.info(
-                "AUDIT_EVENT PRODUCT_DELETED user={} productId={}",
+                "PRODUCT_DELETED user={} productId={}",
                 currentUsername(),
                 id
         );
