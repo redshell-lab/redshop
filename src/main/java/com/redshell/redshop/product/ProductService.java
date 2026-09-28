@@ -2,6 +2,8 @@ package com.redshell.redshop.product;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,6 +14,9 @@ public class ProductService {
 
     private static final Logger log =
             LoggerFactory.getLogger(ProductService.class);
+
+    private static final Logger auditLog =
+            LoggerFactory.getLogger("AUDIT_EVENT");
 
     private final ProductRepository productRepository;
 
@@ -81,7 +86,11 @@ public class ProductService {
 
         Product savedProduct = productRepository.save(product);
 
-        log.info("Product created successfully with id={}", savedProduct.getId());
+        auditLog.info(
+                "AUDIT_EVENT PRODUCT_CREATED user={} productId={}",
+                currentUsername(),
+                savedProduct.getId()
+        );
 
         return savedProduct;
     }
@@ -118,7 +127,11 @@ public class ProductService {
 
         Product updatedProduct = productRepository.save(product);
 
-        log.info("Product updated successfully with id={}", id);
+        auditLog.info(
+                "AUDIT_EVENT PRODUCT_UPDATED user={} productId={}",
+                currentUsername(),
+                updatedProduct.getId()
+        );
 
         return updatedProduct;
     }
@@ -135,6 +148,24 @@ public class ProductService {
 
         productRepository.delete(product);
 
-        log.info("Product deleted successfully with id={}", id);
+        auditLog.info(
+                "AUDIT_EVENT PRODUCT_DELETED user={} productId={}",
+                currentUsername(),
+                id
+        );
+    }
+
+    private String currentUsername() {
+
+        Authentication authentication =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
+
+        if (authentication == null) {
+            return "anonymous";
+        }
+
+        return authentication.getName();
     }
 }

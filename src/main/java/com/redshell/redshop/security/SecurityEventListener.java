@@ -38,6 +38,7 @@ public class SecurityEventListener {
     }
 
     private String getIp(Authentication authentication) {
+
         if (authentication.getDetails() instanceof WebAuthenticationDetails details) {
             return details.getRemoteAddress();
         }

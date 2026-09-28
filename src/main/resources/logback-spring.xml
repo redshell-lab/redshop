@@ -55,6 +55,26 @@
     <logger name="org.springframework.security"
             level="INFO"/>
 
+    <!-- Security events -->
+    <logger name="SECURITY_EVENT"
+            level="INFO"
+            additivity="false">
+
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ROLLING_FILE"/>
+
+    </logger>
+
+
+    <!-- Audit events -->
+    <logger name="AUDIT_EVENT"
+            level="INFO"
+            additivity="false">
+
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ROLLING_FILE"/>
+
+    </logger>
 
     <root level="WARN">
 
