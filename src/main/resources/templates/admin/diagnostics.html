@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: header('System Diagnostics')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main>
+
+    <div class="container">
+
+        <div class="admin-page-header">
+
+            <div>
+                <h1 class="page-title">
+                    System Diagnostics
+                </h1>
+
+                <p class="page-subtitle">
+                    Check network connectivity from the RedShop server.
+                </p>
+            </div>
+
+        </div>
+
+
+        <section class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2 class="section-title">
+                        Ping Host
+                    </h2>
+
+                    <p class="admin-section-description">
+                        Test connectivity to a host from the application server.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <form
+                    method="post"
+                    action="/admin/diagnostics/ping"
+                    class="admin-form">
+
+                <div class="form-group">
+
+                    <label for="host">
+                        Host
+                    </label>
+
+                    <input
+                            id="host"
+                            type="text"
+                            name="host"
+                            th:value="${host}"
+                            placeholder="127.0.0.1"
+                            required>
+
+                </div>
+
+                <input
+                        type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}">
+
+                <button
+                        type="submit"
+                        class="btn btn-primary">
+                    Ping
+                </button>
+
+            </form>
+
+
+            <div
+                    th:if="${output != null}"
+                    class="admin-section">
+
+                <h3 class="section-title">
+                    Result
+                </h3>
+
+                <pre
+                        th:text="${output}"
+                        style="white-space: pre-wrap;"></pre>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+
+</html>

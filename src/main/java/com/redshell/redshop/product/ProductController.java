@@ -56,40 +56,4 @@ public class ProductController {
 
         return "products/detail";
     }
-
-    @GetMapping("/internal/status")
-    @ResponseBody
-    public String internalStatus() {
-        return "RedShop internal service is reachable";
-    }
-
-    @GetMapping("/products/preview-image")
-    @ResponseBody
-    public String previewImage(
-            @RequestParam String url
-    ) {
-        try {
-            java.net.URI uri = java.net.URI.create(url);
-
-            java.net.http.HttpClient client =
-                    java.net.http.HttpClient.newHttpClient();
-
-            java.net.http.HttpRequest request =
-                    java.net.http.HttpRequest.newBuilder()
-                            .uri(uri)
-                            .GET()
-                            .build();
-
-            java.net.http.HttpResponse<String> response =
-                    client.send(
-                            request,
-                            java.net.http.HttpResponse.BodyHandlers.ofString()
-                    );
-
-            return response.body();
-
-        } catch (Exception e) {
-            return "Could not fetch resource";
-        }
-    }
 }
