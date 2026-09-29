@@ -3,7 +3,7 @@ stages:
   - test
   - sast
   - sca
-  # - secrets
+  - secrets
   - package
   # - trivy
   - deploy
@@ -78,11 +78,20 @@ sca-scan:
       - grype-sca.json
 
 
-# gitleaks:
-#   stage: secrets
-#   image: redshop/gitleaks:8.30.1
-#   script:
-#     - gitleaks git .
+secrets:
+  stage: secrets
+  image: redshop/gitleaks:8.30.1
+  script:
+    - |
+      gitleaks detect \
+        --source . \
+        --report-format json \
+        --report-path gitleaks-report.json \
+        --no-banner
+  artifacts:
+    when: always
+    paths:
+      - gitleaks-report.json
 
 
 package:
