@@ -1,0 +1,18 @@
+rules:
+  - id: redshop-java-command-injection
+    languages:
+      - java
+    severity: ERROR
+    message: >
+      Potential command injection: user-controlled input is used
+      in shell command execution via Runtime.exec().
+    patterns:
+      - pattern: Runtime.getRuntime().exec(...)
+    metadata:
+      category: security
+      technology:
+        - java
+        - spring
+      cwe:
+        - "CWE-78"
+      confidence: HIGH
