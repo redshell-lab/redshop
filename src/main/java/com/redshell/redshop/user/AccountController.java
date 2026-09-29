@@ -68,17 +68,20 @@ public class AccountController {
             Authentication authentication,
             @RequestParam String email,
             @RequestParam String firstName,
-            @RequestParam String lastName
+            @RequestParam String lastName,
+            @RequestParam(required = false, defaultValue = "USER") String role
     ) {
         User user = userService.findByUsername(
                 authentication.getName()
         );
 
-        userService.updateProfile(
+        userService.update(
                 user.getId(),
                 email,
+                null,
                 firstName,
-                lastName
+                lastName,
+                role
         );
 
         return "redirect:/account/profile?updated";
