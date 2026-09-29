@@ -37,7 +37,17 @@ sast:
   stage: sast
   image: redshop/opengrep:1.30.0
   script:
-    - opengrep scan --config p/java --config redshop-sast-rules/command-injection.yml --error .
+    - |
+      opengrep scan \
+        --config p/java \
+        --config redshop-sast-rules/command-injection.yml \
+        --json \
+        --output opengrep-sast.json \
+        .
+  artifacts:
+    when: always
+    paths:
+      - opengrep-sast.json
 
 
 # sca-sbom:
