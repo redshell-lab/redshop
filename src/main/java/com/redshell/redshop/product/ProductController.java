@@ -63,7 +63,7 @@ public class ProductController {
         return "RedShop internal service is reachable";
     }
 
-    @PostMapping("/products/preview-image")
+    @GetMapping("/products/preview-image")
     @ResponseBody
     public String previewImage(
             @RequestParam String url
