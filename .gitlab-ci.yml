@@ -2,7 +2,7 @@ stages:
   - build
   - test
   - sast
-  # - sca
+  - sca
   # - secrets
   - package
   # - trivy
@@ -50,24 +50,25 @@ sast:
       - opengrep-sast.json
 
 
-# sca-sbom:
-#   stage: sca
-#   image: redshop/syft:1.51.1
-#   script:
-#     - syft dir:. -o syft-json=sbom.json
-#   artifacts:
-#     paths:
-#       - sbom.json
+sca-sbom:
+  stage: sca
+  image: redshop/syft:1.51.1
+  script:
+    - syft dir:. -o syft-json=sbom.json
+  artifacts:
+    when: always
+    paths:
+      - sbom.json
 
 
-# sca-scan:
-#   stage: sca
-#   image: redshop/grype:0.118.0
-#   needs:
-#     - job: sca-sbom
-#       artifacts: true
-#   script:
-#     - grype sbom:sbom.json
+sca-scan:
+  stage: sca
+  image: redshop/grype:0.118.0
+  needs:
+    - job: sca-sbom
+      artifacts: true
+  script:
+    - grype sbom:sbom.json
 
 
 # gitleaks:
