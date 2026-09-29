@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AccountController {
@@ -213,6 +214,40 @@ public class AccountController {
         if (!avatarPath.startsWith(uploadDirectory)) {
             return ResponseEntity.badRequest().build();
         }
+
+        try {
+            Resource resource =
+                    new UrlResource(avatarPath.toUri());
+
+            if (!resource.exists()
+                    || !resource.isReadable()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok()
+                    .body(resource);
+
+        } catch (MalformedURLException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
+    @GetMapping("/account/avatar/view")
+    public ResponseEntity<Resource> viewAvatar(
+            Authentication authentication,
+            @RequestParam String filename
+    ) {
+        Path uploadDirectory =
+                Paths.get("/app/uploads/avatars")
+                        .toAbsolutePath()
+                        .normalize();
+
+        Path avatarPath =
+                uploadDirectory
+                        .resolve(filename)
+                        .normalize();
 
         try {
             Resource resource =
