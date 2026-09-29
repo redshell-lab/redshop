@@ -1,7 +1,7 @@
 stages:
   - build
   - test
-  # - sast
+  - sast
   # - sca
   # - secrets
   - package
@@ -33,11 +33,11 @@ test:
         - target/surefire-reports/TEST-*.xml
 
 
-# sast:
-#   stage: sast
-#   image: redshop/opengrep:1.30.0
-#   script:
-#     - opengrep scan --config auto --error .
+sast:
+  stage: sast
+  image: redshop/opengrep:1.30.0
+  script:
+    - opengrep scan --config auto --error .
 
 
 # sca-sbom:
