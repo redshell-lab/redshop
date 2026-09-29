@@ -45,8 +45,7 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/js/**",
                                 "/images/**",
-                                "/favicon.ico",
-                                "/error/403"
+                                "/favicon.ico"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
@@ -110,7 +109,7 @@ public class SecurityConfig {
                     request.getRequestURI()
             );
 
-            response.sendRedirect("/error/403");
+            response.sendError(HttpStatus.FORBIDDEN.value());
         };
     }
 }
