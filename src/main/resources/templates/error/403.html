@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: header('Access Denied')}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main>
+    <div class="container">
+
+        <div class="error-page">
+
+            <div class="error-code">
+                403
+            </div>
+
+            <h1 class="page-title">
+                Access denied
+            </h1>
+
+            <p class="page-subtitle">
+                You don't have permission to access this page.
+            </p>
+
+            <div class="error-actions">
+
+                <a
+                        href="/account"
+                        class="btn btn-primary">
+                    Back to My Account
+                </a>
+
+                <a
+                        href="/products"
+                        class="btn btn-secondary">
+                    Back to Shop
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>
