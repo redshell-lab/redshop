@@ -39,20 +39,22 @@ env:
             username: peyman
             password: peyman
 
-  parameters:
-    failOnError: true
-    failOnWarning: false
-    continueOnFailure: true
-    progressToStdout: true
+
+parameters:
+  failOnError: true
+  failOnWarning: false
+  continueOnFailure: true
+  progressToStdout: true
 
 
 jobs:
 
   # ==========================================================
-  # 1. Spider from application root
+  # 1. Spider
   # ==========================================================
 
   - type: spider
+
     parameters:
       context: RedShop
       user: dast-user
@@ -69,250 +71,17 @@ jobs:
       parseComments: true
       parseGit: false
 
-      postForm: true
-      processForm: true
+      postForm: false
+      processForm: false
 
       sendRefererHeader: true
 
 
   # ==========================================================
-  # 2. Spider from ADMIN area
+  # 2. Default ZAP Active Scan
   #
-  # /admin may not be linked from the normal application UI.
-  # ==========================================================
-
-  - type: spider
-    parameters:
-      context: RedShop
-      user: dast-user
-      url: "http://192.168.59.135/admin"
-
-      maxDuration: 5
-      maxDepth: 10
-      maxChildren: 100
-
-      acceptCookies: true
-      handleParameters: use_all
-      logoutAvoidance: true
-
-      parseComments: true
-      parseGit: false
-
-      postForm: true
-      processForm: true
-
-      sendRefererHeader: true
-
-
-  # ==========================================================
-  # 3. Explicit endpoint seeding
-  #
-  # Known vulnerable / important endpoints are explicitly
-  # requested so they are present in the ZAP session.
-  # ==========================================================
-
-  - type: requestor
-
-    parameters:
-      user: dast-user
-
-    requests:
-
-      # ------------------------------------------------------
-      # Stored XSS
-      #
-      # Product detail pages use th:utext for description.
-      # ------------------------------------------------------
-
-      - name: "XSS - Product 1"
-        url: "http://192.168.59.135/products/1"
-        method: GET
-        responseCode: 200
-
-      - name: "XSS - Product 2"
-        url: "http://192.168.59.135/products/2"
-        method: GET
-        responseCode: 200
-
-      - name: "XSS - Product 3"
-        url: "http://192.168.59.135/products/3"
-        method: GET
-        responseCode: 200
-
-      - name: "XSS - Product 4"
-        url: "http://192.168.59.135/products/4"
-        method: GET
-        responseCode: 200
-
-      - name: "XSS - Product 12"
-        url: "http://192.168.59.135/products/12"
-        method: GET
-        responseCode: 200
-
-
-      # ------------------------------------------------------
-      # IDOR
-      #
-      # Known vulnerable endpoint:
-      # GET /profile/{id}
-      # ------------------------------------------------------
-
-      - name: "IDOR - User Profile 3"
-        url: "http://192.168.59.135/profile/3"
-        method: GET
-        responseCode: 200
-
-
-      # ------------------------------------------------------
-      # Path Traversal
-      #
-      # Known vulnerable endpoint:
-      # GET /account/avatar/view?filename=...
-      # ------------------------------------------------------
-
-      - name: "Path Traversal - hostname"
-        url: "http://192.168.59.135/account/avatar/view?filename=../../../../etc/hostname"
-        method: GET
-
-      - name: "Path Traversal - os-release"
-        url: "http://192.168.59.135/account/avatar/view?filename=../../../../etc/os-release"
-        method: GET
-
-
-      # ------------------------------------------------------
-      # Command Injection
-      #
-      # First request the admin diagnostics page.
-      #
-      # The actual POST payload is intentionally not hard-coded
-      # here because the application uses CSRF protection.
-      # ------------------------------------------------------
-
-      - name: "Command Injection - Diagnostics"
-        url: "http://192.168.59.135/admin/diagnostics"
-        method: GET
-        responseCode: 200
-
-
-      # ------------------------------------------------------
-      # Broken Access Control
-      #
-      # The vulnerable POST accepts:
-      #
-      # role=ADMIN
-      #
-      # Actual exploitation is stateful:
-      #
-      # USER login
-      #     ↓
-      # POST /account/profile
-      #     ↓
-      # role=ADMIN
-      #     ↓
-      # logout
-      #     ↓
-      # login again
-      #     ↓
-      # GET /admin
-      #
-      # We therefore only seed the profile endpoint here.
-      # ------------------------------------------------------
-
-      - name: "Broken Access Control - Profile"
-        url: "http://192.168.59.135/account/profile"
-        method: GET
-        responseCode: 200
-
-
-  # ==========================================================
-  # 4. Active Scan Policy
-  # ==========================================================
-
-  - type: activeScan-policy
-
-    parameters:
-      name: "RedShop-DAST"
-
-    policyDefinition:
-      defaultStrength: "Medium"
-      defaultThreshold: "Off"
-
-      rules:
-
-        # ----------------------------------------------------
-        # Persistent XSS
-        # ----------------------------------------------------
-
-        - id: 40014
-          name: "Cross Site Scripting (Persistent)"
-          strength: "High"
-          threshold: "Low"
-
-
-        # ----------------------------------------------------
-        # Reflected XSS
-        # ----------------------------------------------------
-
-        - id: 40012
-          name: "Cross Site Scripting (Reflected)"
-          strength: "High"
-          threshold: "Low"
-
-
-        # ----------------------------------------------------
-        # Path Traversal
-        # ----------------------------------------------------
-
-        - id: 6
-          name: "Path Traversal"
-          strength: "High"
-          threshold: "Low"
-
-
-        # ----------------------------------------------------
-        # Remote OS Command Injection
-        # ----------------------------------------------------
-
-        - id: 90020
-          name: "Remote OS Command Injection"
-          strength: "High"
-          threshold: "Low"
-
-
-        # ----------------------------------------------------
-        # Time-Based OS Command Injection
-        # ----------------------------------------------------
-
-        - id: 90037
-          name: "Remote OS Command Injection (Time Based)"
-          strength: "Medium"
-          threshold: "Low"
-
-
-  # ==========================================================
-  # 5. Active Scan Configuration
-  # ==========================================================
-
-  - type: activeScan-config
-
-    parameters:
-      maxRuleDurationInMins: 10
-      maxScanDurationInMins: 30
-
-      maxAlertsPerRule: 20
-
-      defaultPolicy: "RedShop-DAST"
-
-      handleAntiCSRFTokens: true
-      injectPluginIdInHeader: true
-
-      threadPerHost: 1
-
-
-  # ==========================================================
-  # 6. Active Scan
-  #
-  # Scan the complete RedShop context as ADMIN.
+  # No custom active-scan policy is defined here.
+  # ZAP will use its default Active Scan policy.
   # ==========================================================
 
   - type: activeScan
@@ -321,22 +90,18 @@ jobs:
       context: RedShop
       user: dast-user
 
-      policy: "RedShop-DAST"
-
-      maxRuleDurationInMins: 10
-      maxScanDurationInMins: 30
+      maxRuleDurationInMins: 5
+      maxScanDurationInMins: 3
 
 
   # ==========================================================
-  # 7. Report
+  # 3. Report
   # ==========================================================
 
   - type: report
 
     parameters:
       template: traditional-html
-
       reportDir: /zap/wrk/redshop-dast/
       reportFile: zap-report.html
-
       reportTitle: "RedShop DAST Security Report"
