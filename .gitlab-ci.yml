@@ -221,13 +221,8 @@ dast:
   script:
     - mkdir -p /zap/wrk/redshop-dast
     - cp redshop-dast/zap.yaml /zap/wrk/redshop-dast/zap.yaml
-
-    - |
-      zap.sh -cmd \
-        -autorun /zap/wrk/redshop-dast/zap.yaml
-
-    - cp /zap/wrk/redshop-dast/zap-report.html \
-      "$CI_PROJECT_DIR/zap-report.html"
+    - zap.sh -cmd -autorun /zap/wrk/redshop-dast/zap.yaml
+    - cp /zap/wrk/redshop-dast/zap-report.html "$CI_PROJECT_DIR/zap-report.html"
 
   artifacts:
     when: always
