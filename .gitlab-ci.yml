@@ -88,6 +88,7 @@ secrets:
         --report-format json \
         --report-path gitleaks-report.json \
         --no-banner \
+        --redact \
         --exit-code 0
   artifacts:
     when: always
