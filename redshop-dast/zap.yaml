@@ -1,9 +1,5 @@
 env:
 
-  vars:
-    DAST_USERNAME: ${DAST_USERNAME}
-    DAST_PASSWORD: ${DAST_PASSWORD}
-
   contexts:
 
     - name: RedShop
@@ -55,9 +51,9 @@ env:
 
           credentials:
 
-            username: ${DAST_USERNAME}
+            username: peyman
 
-            password: ${DAST_PASSWORD}
+            password: peyman
 
 
   parameters:
@@ -128,31 +124,26 @@ jobs:
 
       rules:
 
-        # Persistent XSS
         - id: 40014
           name: "Cross Site Scripting (Persistent)"
           strength: "High"
           threshold: "Low"
 
-        # Reflected XSS
         - id: 40012
           name: "Cross Site Scripting (Reflected)"
           strength: "High"
           threshold: "Low"
 
-        # Path Traversal
         - id: 6
           name: "Path Traversal"
           strength: "High"
           threshold: "Low"
 
-        # Remote OS Command Injection
         - id: 90020
           name: "Remote OS Command Injection"
           strength: "High"
           threshold: "Low"
 
-        # Time Based Command Injection
         - id: 90037
           name: "Remote OS Command Injection (Time Based)"
           strength: "Medium"
