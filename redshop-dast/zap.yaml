@@ -74,30 +74,7 @@ env:
 jobs:
 
   # =========================================================
-  # 1. VERIFY AUTHENTICATION
-  # =========================================================
-
-  - type: requestor
-
-    parameters:
-
-      user: dast-user
-
-      requests:
-
-        - name: "Authenticated account verification"
-
-          url: "http://192.168.59.135/account"
-
-          method: GET
-
-          httpVersion: HTTP/1.1
-
-          responseCode: 200
-
-
-  # =========================================================
-  # 2. AUTHENTICATED SPIDER
+  # 1. AUTHENTICATED SPIDER
   # =========================================================
 
   - type: spider
@@ -134,75 +111,7 @@ jobs:
 
 
   # =========================================================
-  # 3. SEED VULNERABLE ENDPOINTS
-  # =========================================================
-
-  - type: requestor
-
-    parameters:
-
-      user: dast-user
-
-      requests:
-
-        # -----------------------------------------------------
-        # Path Traversal
-        # -----------------------------------------------------
-
-        - name: "Path Traversal - hostname"
-
-          url: "http://192.168.59.135/account/avatar/view?filename=../../../../etc/hostname"
-
-          method: GET
-
-          httpVersion: HTTP/1.1
-
-          responseCode: 200
-
-
-        - name: "Path Traversal - os-release"
-
-          url: "http://192.168.59.135/account/avatar/view?filename=../../../../etc/os-release"
-
-          method: GET
-
-          httpVersion: HTTP/1.1
-
-          responseCode: 200
-
-
-        # -----------------------------------------------------
-        # Command Injection
-        # -----------------------------------------------------
-
-        - name: "Command Injection - diagnostics page"
-
-          url: "http://192.168.59.135/admin/diagnostics"
-
-          method: GET
-
-          httpVersion: HTTP/1.1
-
-          responseCode: 200
-
-
-        # -----------------------------------------------------
-        # IDOR
-        # -----------------------------------------------------
-
-        - name: "IDOR - profile endpoint"
-
-          url: "http://192.168.59.135/profile/3"
-
-          method: GET
-
-          httpVersion: HTTP/1.1
-
-          responseCode: 200
-
-
-  # =========================================================
-  # 4. ACTIVE SCAN POLICY
+  # 2. ACTIVE SCAN POLICY
   # =========================================================
 
   - type: activeScan-policy
@@ -243,7 +152,7 @@ jobs:
           strength: "High"
           threshold: "Low"
 
-        # Remote OS Command Injection - Time Based
+        # Time Based Command Injection
         - id: 90037
           name: "Remote OS Command Injection (Time Based)"
           strength: "Medium"
@@ -251,7 +160,7 @@ jobs:
 
 
   # =========================================================
-  # 5. ACTIVE SCAN CONFIGURATION
+  # 3. ACTIVE SCAN CONFIGURATION
   # =========================================================
 
   - type: activeScan-config
@@ -274,7 +183,7 @@ jobs:
 
 
   # =========================================================
-  # 6. ACTIVE SCAN
+  # 4. ACTIVE SCAN
   # =========================================================
 
   - type: activeScan
@@ -293,7 +202,7 @@ jobs:
 
 
   # =========================================================
-  # 7. REPORT
+  # 5. REPORT
   # =========================================================
 
   - type: report
@@ -302,7 +211,7 @@ jobs:
 
       template: traditional-html
 
-      reportDir: /zap/wrk/
+      reportDir: /zap/wrk/redshop-dast/
 
       reportFile: zap-report.html
 
