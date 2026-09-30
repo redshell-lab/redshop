@@ -33,9 +33,9 @@ env:
 
           method: poll
 
-          loggedInRegex: "Logout|Account|Profile"
+          loggedInRegex: "My Account|Account|Profile"
 
-          loggedOutRegex: "Login|Sign in"
+          loggedOutRegex: "Welcome back|Sign in|Login"
 
           pollFrequency: 1
 
