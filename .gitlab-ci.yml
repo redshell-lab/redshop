@@ -82,6 +82,16 @@ secrets:
   stage: secrets
   image: redshop/gitleaks:8.30.1
   script:
+    - echo "=== TEST FILE ==="
+    - pwd
+    - ls -la
+    - echo "--- gitleaks-test.txt ---"
+    - cat gitleaks-test.txt
+    - echo "=== GITLEAKS VERSION ==="
+    - gitleaks version
+    - echo "=== GITLEAKS HELP ==="
+    - gitleaks detect --help
+    - echo "=== SCAN ==="
     - |
       gitleaks detect \
         --source . \
