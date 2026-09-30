@@ -25,7 +25,7 @@ public class Cart {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<CartItem> items = new ArrayList<>();
+    private final List<CartItem> items = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
