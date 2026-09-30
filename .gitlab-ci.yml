@@ -5,9 +5,9 @@ stages:
 #  - sca
   - secrets
   - package
-  - trivy
+#  - trivy
   - deploy
-# - dast
+  - dast
 
 
 build:
@@ -106,22 +106,22 @@ package:
     - docker build -t redshop/redshop:$CI_COMMIT_SHORT_SHA .
 
 
-trivy:
-  stage: trivy
-  image: redshop/trivy:0.74.0
-  needs:
-    - job: package
-  script:
-    - |
-      trivy image \
-        --format json \
-        --output trivy-report.json \
-        --severity HIGH,CRITICAL \
-        redshop/redshop:$CI_COMMIT_SHORT_SHA
-  artifacts:
-    when: always
-    paths:
-      - trivy-report.json
+#trivy:
+#  stage: trivy
+#  image: redshop/trivy:0.74.0
+#  needs:
+#    - job: package
+#  script:
+#    - |
+#      trivy image \
+#        --format json \
+#        --output trivy-report.json \
+#        --severity HIGH,CRITICAL \
+#        redshop/redshop:$CI_COMMIT_SHORT_SHA
+#  artifacts:
+#    when: always
+#    paths:
+#      - trivy-report.json
 
 
 deploy:
@@ -208,25 +208,26 @@ deploy:
         "curl --fail --silent --show-error http://127.0.0.1/"
 
 
-# dast:
-#   stage: dast
-#   image: ghcr.io/zaproxy/zaproxy:stable
-#
-#   needs:
-#     - job: deploy
-#
-#   script:
-#     - rm -f /zap/wrk/zap-report.html
-#
-#     - |
-#       zap-baseline.py \
-#         -t http://192.168.59.135/ \
-#         -r zap-report.html \
-#         -I
-#
-#     - cp /zap/wrk/zap-report.html "$CI_PROJECT_DIR/zap-report.html"
-#
-#   artifacts:
-#     when: always
-#     paths:
-#       - zap-report.html
+dast:
+  stage: dast
+
+  image: ghcr.io/zaproxy/zaproxy:stable
+
+  needs:
+    - job: deploy
+
+  script:
+    - rm -f /zap/wrk/zap-report.html
+
+    - |
+      zap-baseline.py \
+        -t http://192.168.59.135/ \
+        -r zap-report.html \
+        -I
+
+    - cp /zap/wrk/zap-report.html "$CI_PROJECT_DIR/zap-report.html"
+
+  artifacts:
+    when: always
+    paths:
+      - zap-report.html
