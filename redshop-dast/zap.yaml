@@ -36,8 +36,8 @@ env:
       users:
         - name: dast-user
           credentials:
-            username: admin
-            password: Admin123!
+            username: peyman
+            password: peyman
 
   parameters:
     failOnError: true
