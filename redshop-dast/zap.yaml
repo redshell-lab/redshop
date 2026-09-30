@@ -1,0 +1,309 @@
+env:
+
+  vars:
+    DAST_USERNAME: ${DAST_USERNAME}
+    DAST_PASSWORD: ${DAST_PASSWORD}
+
+  contexts:
+
+    - name: RedShop
+
+      urls:
+        - "http://192.168.59.135/"
+
+      includePaths:
+        - "http://192\\.168\\.59\\.135/.*"
+
+      excludePaths:
+        - "http://192\\.168\\.59\\.135/logout.*"
+
+      authentication:
+
+        method: form
+
+        parameters:
+
+          loginPageUrl: "http://192.168.59.135/login"
+
+          loginRequestUrl: "http://192.168.59.135/login"
+
+          loginRequestBody: "username={%username%}&password={%password%}"
+
+        verification:
+
+          method: poll
+
+          loggedInRegex: "Logout|Account|Profile"
+
+          loggedOutRegex: "Login|Sign in"
+
+          pollFrequency: 1
+
+          pollUnits: requests
+
+          pollUrl: "http://192.168.59.135/account"
+
+          pollPostData: ""
+
+      sessionManagement:
+
+        method: cookie
+
+      users:
+
+        - name: dast-user
+
+          credentials:
+
+            username: ${DAST_USERNAME}
+
+            password: ${DAST_PASSWORD}
+
+
+  parameters:
+
+    failOnError: true
+
+    failOnWarning: false
+
+    continueOnFailure: true
+
+    progressToStdout: true
+
+
+jobs:
+
+  # =========================================================
+  # 1. VERIFY AUTHENTICATION
+  # =========================================================
+
+  - type: requestor
+
+    parameters:
+
+      user: dast-user
+
+      requests:
+
+        - name: "Authenticated account verification"
+
+          url: "http://192.168.59.135/account"
+
+          method: GET
+
+          httpVersion: HTTP/1.1
+
+          responseCode: 200
+
+
+  # =========================================================
+  # 2. AUTHENTICATED SPIDER
+  # =========================================================
+
+  - type: spider
+
+    parameters:
+
+      context: RedShop
+
+      user: dast-user
+
+      url: "http://192.168.59.135/"
+
+      maxDuration: 5
+
+      maxDepth: 10
+
+      maxChildren: 50
+
+      acceptCookies: true
+
+      handleParameters: use_all
+
+      logoutAvoidance: true
+
+      parseComments: true
+
+      parseGit: false
+
+      postForm: true
+
+      processForm: true
+
+      sendRefererHeader: true
+
+
+  # =========================================================
+  # 3. SEED VULNERABLE ENDPOINTS
+  # =========================================================
+
+  - type: requestor
+
+    parameters:
+
+      user: dast-user
+
+      requests:
+
+        # -----------------------------------------------------
+        # Path Traversal
+        # -----------------------------------------------------
+
+        - name: "Path Traversal - hostname"
+
+          url: "http://192.168.59.135/account/avatar/view?filename=../../../../etc/hostname"
+
+          method: GET
+
+          httpVersion: HTTP/1.1
+
+          responseCode: 200
+
+
+        - name: "Path Traversal - os-release"
+
+          url: "http://192.168.59.135/account/avatar/view?filename=../../../../etc/os-release"
+
+          method: GET
+
+          httpVersion: HTTP/1.1
+
+          responseCode: 200
+
+
+        # -----------------------------------------------------
+        # Command Injection
+        # -----------------------------------------------------
+
+        - name: "Command Injection - diagnostics page"
+
+          url: "http://192.168.59.135/admin/diagnostics"
+
+          method: GET
+
+          httpVersion: HTTP/1.1
+
+          responseCode: 200
+
+
+        # -----------------------------------------------------
+        # IDOR
+        # -----------------------------------------------------
+
+        - name: "IDOR - profile endpoint"
+
+          url: "http://192.168.59.135/profile/3"
+
+          method: GET
+
+          httpVersion: HTTP/1.1
+
+          responseCode: 200
+
+
+  # =========================================================
+  # 4. ACTIVE SCAN POLICY
+  # =========================================================
+
+  - type: activeScan-policy
+
+    parameters:
+
+      name: "RedShop-DAST"
+
+    policyDefinition:
+
+      defaultStrength: "Medium"
+
+      defaultThreshold: "Off"
+
+      rules:
+
+        # Persistent XSS
+        - id: 40014
+          name: "Cross Site Scripting (Persistent)"
+          strength: "High"
+          threshold: "Low"
+
+        # Reflected XSS
+        - id: 40012
+          name: "Cross Site Scripting (Reflected)"
+          strength: "High"
+          threshold: "Low"
+
+        # Path Traversal
+        - id: 6
+          name: "Path Traversal"
+          strength: "High"
+          threshold: "Low"
+
+        # Remote OS Command Injection
+        - id: 90020
+          name: "Remote OS Command Injection"
+          strength: "High"
+          threshold: "Low"
+
+        # Remote OS Command Injection - Time Based
+        - id: 90037
+          name: "Remote OS Command Injection (Time Based)"
+          strength: "Medium"
+          threshold: "Low"
+
+
+  # =========================================================
+  # 5. ACTIVE SCAN CONFIGURATION
+  # =========================================================
+
+  - type: activeScan-config
+
+    parameters:
+
+      maxRuleDurationInMins: 10
+
+      maxScanDurationInMins: 30
+
+      maxAlertsPerRule: 10
+
+      defaultPolicy: "RedShop-DAST"
+
+      handleAntiCSRFTokens: true
+
+      injectPluginIdInHeader: true
+
+      threadPerHost: 1
+
+
+  # =========================================================
+  # 6. ACTIVE SCAN
+  # =========================================================
+
+  - type: activeScan
+
+    parameters:
+
+      context: RedShop
+
+      user: dast-user
+
+      policy: "RedShop-DAST"
+
+      maxRuleDurationInMins: 10
+
+      maxScanDurationInMins: 30
+
+
+  # =========================================================
+  # 7. REPORT
+  # =========================================================
+
+  - type: report
+
+    parameters:
+
+      template: traditional-html
+
+      reportDir: /zap/wrk/
+
+      reportFile: zap-report.html
+
+      reportTitle: "RedShop DAST Security Report"
