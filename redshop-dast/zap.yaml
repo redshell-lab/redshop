@@ -15,15 +15,19 @@ env:
 
       authentication:
 
-        method: form
+        method: browser
 
         parameters:
 
           loginPageUrl: "http://192.168.59.135/login"
 
-          loginRequestUrl: "http://192.168.59.135/login"
+          browserId: firefox-headless
 
-          loginRequestBody: "username={%username%}&password={%password%}"
+          loginPageWait: 3
+
+          stepDelay: 0
+
+          diagnostics: true
 
         verification:
 
@@ -43,7 +47,7 @@ env:
 
       sessionManagement:
 
-        method: cookie
+        method: autodetect
 
       users:
 
@@ -52,7 +56,6 @@ env:
           credentials:
 
             username: peyman
-
             password: peyman
 
 
@@ -69,24 +72,17 @@ env:
 
 jobs:
 
-  # =========================================================
-  # 1. AUTHENTICATED SPIDER
-  # =========================================================
-
   - type: spider
 
     parameters:
 
       context: RedShop
-
       user: dast-user
 
       url: "http://192.168.59.135/"
 
       maxDuration: 5
-
       maxDepth: 10
-
       maxChildren: 50
 
       acceptCookies: true
@@ -96,19 +92,13 @@ jobs:
       logoutAvoidance: true
 
       parseComments: true
-
       parseGit: false
 
       postForm: true
-
       processForm: true
 
       sendRefererHeader: true
 
-
-  # =========================================================
-  # 2. ACTIVE SCAN POLICY
-  # =========================================================
 
   - type: activeScan-policy
 
@@ -119,7 +109,6 @@ jobs:
     policyDefinition:
 
       defaultStrength: "Medium"
-
       defaultThreshold: "Off"
 
       rules:
@@ -150,10 +139,6 @@ jobs:
           threshold: "Low"
 
 
-  # =========================================================
-  # 3. ACTIVE SCAN CONFIGURATION
-  # =========================================================
-
   - type: activeScan-config
 
     parameters:
@@ -173,10 +158,6 @@ jobs:
       threadPerHost: 1
 
 
-  # =========================================================
-  # 4. ACTIVE SCAN
-  # =========================================================
-
   - type: activeScan
 
     parameters:
@@ -191,10 +172,6 @@ jobs:
 
       maxScanDurationInMins: 30
 
-
-  # =========================================================
-  # 5. REPORT
-  # =========================================================
 
   - type: report
 
