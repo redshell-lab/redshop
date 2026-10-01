@@ -37,7 +37,7 @@ env:
         - name: dast-user
           credentials:
             username: peyman
-            password: peyman
+            password: peyman2
 
 
 parameters:
