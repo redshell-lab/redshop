@@ -189,7 +189,14 @@ jobs:
 
   - type: report
     parameters:
-      template: traditional-html
+      template: modern
       reportDir: /zap/wrk/redshop-dast/
       reportFile: zap-report.html
+      reportTitle: "RedShop DAST Security Report"
+
+  - type: report
+    parameters:
+      template: traditional-json
+      reportDir: /zap/wrk/redshop-dast/
+      reportFile: zap-report.json
       reportTitle: "RedShop DAST Security Report"
