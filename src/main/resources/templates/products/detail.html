@@ -27,7 +27,7 @@
             </h1>
 
             <p class="product-detail-description"
-               th:utext="${product.description}">
+               th:text="${product.description}">
                 Product description
             </p>
 
@@ -154,7 +154,7 @@
                     </div>
 
                     <p class="review-content"
-                       th:text="${review.content}">
+                       th:utext="${review.content}">
                         Very nice product
                     </p>
 

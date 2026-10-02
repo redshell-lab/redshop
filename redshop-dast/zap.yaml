@@ -154,6 +154,7 @@ jobs:
       name: "RedShop Diagnostics Sequence"
       path: "/zap/wrk/redshop-dast/redshop-diagnostics.har"
 
+
   # ==========================================================
   # Active Scan - Command Injection Sequence
   # ==========================================================
