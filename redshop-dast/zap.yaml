@@ -109,12 +109,12 @@ jobs:
     parameters:
       user: dast-user
 
-      requests:
-        - url: "http://192.168.59.135/account/avatar/view?filename=test.txt"
-          name: "Seed Path Traversal"
-          method: GET
-          headers:
-            - "Accept: */*"
+    requests:
+      - url: "http://192.168.59.135/account/avatar/view?filename=test.txt"
+        name: "Seed Path Traversal"
+        method: GET
+        headers:
+          - "Accept: */*"
 
 
   # ==========================================================
