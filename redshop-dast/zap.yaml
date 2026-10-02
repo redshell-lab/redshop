@@ -50,7 +50,7 @@ parameters:
 jobs:
 
   # ==========================================================
-  # 1. Traditional Spider
+  # Traditional Spider
   # ==========================================================
 
   - type: spider
@@ -78,7 +78,7 @@ jobs:
 
 
   # ==========================================================
-  # 2. Client Spider
+  # Client Spider
   # ==========================================================
 
   - type: spiderClient
@@ -93,7 +93,46 @@ jobs:
 
 
   # ==========================================================
-  # 3. Passive Scan
+  # Passive Scan
+  # ==========================================================
+
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 5
+
+
+  # ==========================================
+  # Active Scan - Path Traversal ONLY
+  # ==========================================
+
+  - type: activeScan
+    parameters:
+      context: RedShop
+      user: dast-user
+
+      url: "http://192.168.59.135/account/avatar/view"
+
+      maxRuleDurationInMins: 2
+      maxScanDurationInMins: 2
+
+      policy: Path-Traversal-Only
+
+      handleAntiCSRFTokens: true
+
+
+    policyDefinition:
+      defaultStrength: Low
+      defaultThreshold: "Off"
+
+      rules:
+        - id: 6
+          name: "Path Traversal"
+          strength: Low
+          threshold: Low
+
+
+  # ==========================================================
+  # Passive Scan
   # ==========================================================
 
   - type: passiveScan-wait
@@ -102,7 +141,7 @@ jobs:
 
 
   # ==========================================================
-  # 4. HTML Report
+  # HTML Report
   # ==========================================================
 
   - type: report
