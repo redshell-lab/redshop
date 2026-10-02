@@ -108,22 +108,24 @@ jobs:
   - type: requestor
     parameters:
       user: dast-user
+
       requests:
         - url: "http://192.168.59.135/account/avatar/view?filename=test.txt"
           name: "Seed Path Traversal"
           method: GET
           headers:
             - "Accept: */*"
-            -
 
- # ==========================================================
- # Active Scan - Path Traversal ONLY
- # ==========================================================
+
+  # ==========================================================
+  # Active Scan - Path Traversal ONLY
+  # ==========================================================
 
   - type: activeScan
     parameters:
       context: RedShop
       user: dast-user
+
       url: "http://192.168.59.135/account/avatar/view"
 
       maxRuleDurationInMins: 2
