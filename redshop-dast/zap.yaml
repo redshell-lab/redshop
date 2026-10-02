@@ -126,12 +126,10 @@ jobs:
       context: RedShop
       user: dast-user
 
-      url: "http://192.168.59.135/account/avatar/view"
+      url: "http://192.168.59.135/account/avatar/view?filename=test.txt"
 
       maxRuleDurationInMins: 2
       maxScanDurationInMins: 2
-
-      policy: Path-Traversal-Only
 
       handleAntiCSRFTokens: true
 
