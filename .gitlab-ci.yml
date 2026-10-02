@@ -222,6 +222,7 @@ dast:
     - mkdir -p /zap/wrk/redshop-dast
     - cp redshop-dast/zap.yaml /zap/wrk/redshop-dast/zap.yaml
     - cp redshop-dast/redshop-diagnostics.har /zap/wrk/redshop-dast/redshop-diagnostics.har
+    - cp redshop-dast/redshop-review-xss.har /zap/wrk/redshop-dast/redshop-review-xss.har
 
     - zap.sh -cmd -autorun /zap/wrk/redshop-dast/zap.yaml
 

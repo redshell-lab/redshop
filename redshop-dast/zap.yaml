@@ -174,6 +174,37 @@ jobs:
           threshold: Low
 
 
+
+  # ==========================================================
+  # Import Stored XSS sequence from HAR
+  # ==========================================================
+
+  - type: sequence-import
+    parameters:
+      name: "RedShop Stored XSS Sequence"
+      path: "/zap/wrk/redshop-dast/redshop-review-xss.har"
+
+
+  # ==========================================================
+  # Active Scan - Stored XSS Sequence
+  # ==========================================================
+
+  - type: sequence-activeScan
+    parameters:
+      sequence: "RedShop Stored XSS Sequence"
+      context: RedShop
+      user: dast-user
+    policyDefinition:
+      defaultStrength: Low
+      defaultThreshold: "Off"
+      rules:
+        - id: 40012
+          name: "Cross Site Scripting (Persistent)"
+          strength: Low
+          threshold: Low
+
+
+
   # ==========================================================
   # Passive Scan
   # ==========================================================
