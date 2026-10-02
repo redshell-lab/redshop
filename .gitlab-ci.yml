@@ -1,8 +1,8 @@
 stages:
   - build
-#  - test
-#  - sast
-#  - sca
+  - test
+  - sast
+  - sca
   - secrets
   - package
 #  - trivy
@@ -20,62 +20,62 @@ build:
       - target/*.jar
 
 
-#test:
-#  stage: test
-#  image: maven:3.9-eclipse-temurin-21
-#  script:
-#    - mvn -Dmaven.repo.local=/cache/maven test
-#
-#  artifacts:
-#    when: always
-#    reports:
-#      junit:
-#        - target/surefire-reports/TEST-*.xml
-#
-#
-#sast:
-#  stage: sast
-#  image: redshop/opengrep:1.30.0
-#  script:
-#    - |
-#      opengrep scan \
-#        --config p/java \
-#        --config redshop-sast-rules/command-injection.yml \
-#        --json \
-#        --output opengrep-sast.json \
-#        .
-#  artifacts:
-#    when: always
-#    paths:
-#      - opengrep-sast.json
-#
-#
-#sca-sbom:
-#  stage: sca
-#  image: redshop/syft:1.51.1
-#  script:
-#    - syft dir:. -o syft-json=sbom.json
-#  artifacts:
-#    when: always
-#    paths:
-#      - sbom.json
-#
-#
-#sca-scan:
-#  stage: sca
-#  image: redshop/grype:0.118.0
-#  needs:
-#    - job: sca-sbom
-#      artifacts: true
-#  script:
-#    - |
-#      grype sbom:sbom.json \
-#        -o json \
-#        --file grype-sca.json
-#  artifacts:
-#    when: always
-#    paths:
-#      - grype-sca.json
+test:
+  stage: test
+  image: maven:3.9-eclipse-temurin-21
+  script:
+    - mvn -Dmaven.repo.local=/cache/maven test
+
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+
+
+sast:
+  stage: sast
+  image: redshop/opengrep:1.30.0
+  script:
+    - |
+      opengrep scan \
+        --config p/java \
+        --config redshop-sast-rules/command-injection.yml \
+        --json \
+        --output opengrep-sast.json \
+        .
+  artifacts:
+    when: always
+    paths:
+      - opengrep-sast.json
+
+
+sca-sbom:
+  stage: sca
+  image: redshop/syft:1.51.1
+  script:
+    - syft dir:. -o syft-json=sbom.json
+  artifacts:
+    when: always
+    paths:
+      - sbom.json
+
+
+sca-scan:
+  stage: sca
+  image: redshop/grype:0.118.0
+  needs:
+    - job: sca-sbom
+      artifacts: true
+  script:
+    - |
+      grype sbom:sbom.json \
+        -o json \
+        --file grype-sca.json
+  artifacts:
+    when: always
+    paths:
+      - grype-sca.json
 
 
 secrets:
