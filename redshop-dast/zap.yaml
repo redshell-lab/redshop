@@ -102,7 +102,7 @@ jobs:
 
 
   # ==========================================================
-  # Seed request
+  # Seed request - Path Traversal
   # ==========================================================
 
   - type: requestor
@@ -115,6 +115,26 @@ jobs:
         method: GET
         headers:
           - "Accept: */*"
+
+
+  # ==========================================================
+  # Seed request - Command Injection
+  # ==========================================================
+
+  - type: requestor
+    parameters:
+      user: dast-user
+
+    requests:
+      - url: "http://192.168.59.135/admin/diagnostics/ping"
+        name: "Seed Command Injection"
+        method: POST
+        headers:
+          - "Content-Type: application/x-www-form-urlencoded"
+          - "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+          - "Origin: http://192.168.59.135"
+          - "Referer: http://192.168.59.135/admin/diagnostics"
+        data: "host=127.0.0.1"
 
 
   # ==========================================================
@@ -140,6 +160,33 @@ jobs:
       rules:
         - id: 6
           name: "Path Traversal"
+          strength: Low
+          threshold: Low
+
+
+  # ==========================================================
+  # Active Scan - Command Injection ONLY
+  # ==========================================================
+
+  - type: activeScan
+    parameters:
+      context: RedShop
+      user: dast-user
+
+      url: "http://192.168.59.135/admin/diagnostics/ping"
+
+      maxRuleDurationInMins: 2
+      maxScanDurationInMins: 2
+
+      handleAntiCSRFTokens: true
+
+    policyDefinition:
+      defaultStrength: Low
+      defaultThreshold: "Off"
+
+      rules:
+        - id: 90020
+          name: "Remote OS Command Injection"
           strength: Low
           threshold: Low
 
