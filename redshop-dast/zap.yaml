@@ -126,15 +126,11 @@ jobs:
       user: dast-user
 
     requests:
-      - url: "http://192.168.59.135/admin/diagnostics/ping"
-        name: "Seed Command Injection"
-        method: POST
+      - url: "http://192.168.59.135/admin/diagnostics"
+        name: "Discover Diagnostics Page"
+        method: GET
         headers:
-          - "Content-Type: application/x-www-form-urlencoded"
-          - "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-          - "Origin: http://192.168.59.135"
-          - "Referer: http://192.168.59.135/admin/diagnostics"
-        data: "host=127.0.0.1"
+          - "Accept: text/html"
 
 
   # ==========================================================
