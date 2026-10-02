@@ -118,42 +118,6 @@ jobs:
 
 
   # ==========================================================
-  # Seed request - Command Injection
-  # ==========================================================
-
-  - type: requestor
-    parameters:
-      user: dast-user
-
-    requests:
-      - url: "http://192.168.59.135/admin/diagnostics/ping"
-        name: "Seed Command Injection"
-        method: POST
-        headers:
-          - "Content-Type: application/x-www-form-urlencoded"
-          - "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-          - "Origin: http://192.168.59.135"
-          - "Referer: http://192.168.59.135/admin/diagnostics"
-        data: "host=127.0.0.1"
-
-
-  - type: requestor
-    parameters:
-      user: dast-user
-
-    requests:
-      - url: "http://192.168.59.135/admin/diagnostics/ping"
-        name: "Seed Command Injection"
-        method: POST
-        headers:
-          - "Content-Type: application/x-www-form-urlencoded"
-          - "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-          - "Origin: http://192.168.59.135"
-          - "Referer: http://192.168.59.135/admin/diagnostics"
-        data: "host=127.0.0.1"
-        responseCode: 200
-
-  # ==========================================================
   # Active Scan - Path Traversal ONLY
   # ==========================================================
 
@@ -180,26 +144,28 @@ jobs:
           threshold: Low
 
 
+
   # ==========================================================
-  # Active Scan - Command Injection ONLY
+  # Import Command Injection sequence from Burp HAR
   # ==========================================================
 
-  - type: activeScan
+  - type: sequence-import
     parameters:
+      name: "RedShop Diagnostics Sequence"
+      path: "/zap/wrk/redshop-dast/redshop-diagnostics.har"
+
+  # ==========================================================
+  # Active Scan - Command Injection Sequence
+  # ==========================================================
+
+  - type: sequence-activeScan
+    parameters:
+      sequence: "RedShop Diagnostics Sequence"
       context: RedShop
       user: dast-user
-
-      url: "http://192.168.59.135/admin/diagnostics/ping"
-
-      maxRuleDurationInMins: 2
-      maxScanDurationInMins: 2
-
-      handleAntiCSRFTokens: true
-
     policyDefinition:
       defaultStrength: Low
       defaultThreshold: "Off"
-
       rules:
         - id: 90020
           name: "Remote OS Command Injection"
